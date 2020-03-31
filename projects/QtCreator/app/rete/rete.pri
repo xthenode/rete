@@ -91,7 +91,11 @@ $${RETE_SRC}/xos/network/sockets/posix/interface.hpp \
 $${RETE_SRC}/xos/network/sockets/posix/os.hpp \
 $${RETE_SRC}/xos/network/sockets/os/os.hpp \
 $${RETE_SRC}/xos/network/sockets/os/interface.hpp \
+$${RETE_SRC}/xos/network/sockets/reader.hpp \
+$${RETE_SRC}/xos/network/sockets/writer.hpp \
 \
+$${RETE_SRC}/xos/app/console/network/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/main.hpp \
 $${RETE_SRC}/xos/app/console/rete/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/rete/main.hpp \
 $${NADIR_SRC}/xos/console/main_main.hpp \
@@ -104,6 +108,8 @@ $${NADIR_SRC}/xos/base/opened.cpp \
 $${RETE_SRC}/xos/network/addresses.cpp \
 $${RETE_SRC}/xos/network/transports.cpp \
 $${RETE_SRC}/xos/network/endpoints.cpp \
+$${RETE_SRC}/xos/network/sockets/reader.cpp \
+$${RETE_SRC}/xos/network/sockets/writer.cpp \
 $${RETE_SRC}/xos/network/sockets/os/os.cpp \
 $${RETE_SRC}/xos/network/sockets/os/interface.cpp \
 \

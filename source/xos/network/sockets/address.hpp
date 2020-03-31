@@ -48,6 +48,9 @@ typedef u_short sockport_t;
 /// sockstring_t
 typedef string sockstring_t;
 
+/// sockchar_t
+typedef sockstring_t::char_t sockchar_t;
+
 /// class addresst
 template <class TImplements = network::address>
 class exported addresst: virtual public TImplements {

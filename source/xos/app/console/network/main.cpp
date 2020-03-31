@@ -13,49 +13,22 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.hpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 3/22/2020
+///   Date: 3/25/2020
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
-#define XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
-
 #include "xos/app/console/network/main.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace rete {
+namespace network {
 
-/// class main_optt
-template <class TExtends = network::main, class TImplements = typename TExtends::implements>
-class exported main_optt: virtual public TImplements, public TExtends {
-public:
-    typedef TImplements implements;
-    typedef TExtends extends;
-    typedef main_optt derives;
+/// class maint
+//static main the_main;
 
-    typedef typename extends::string_t string_t;
-    typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
-
-    /// constructor / destructor
-    main_optt() {
-    }
-    virtual ~main_optt() {
-    }
-private:
-    main_optt(const main_optt& copy): extends(copy) {
-    }
-public:
-}; /// class main_optt
-typedef main_optt<> main_opt;
-
-} /// namespace rete
+} /// namespace network
 } /// namespace console
 } /// namespace app
 } /// namespace xos
-
-#endif /// ndef XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP 

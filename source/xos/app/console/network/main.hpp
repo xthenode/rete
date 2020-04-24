@@ -66,22 +66,103 @@ protected:
     /// ...run
     virtual int accept_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = this->accept(argc, argv, env);
+        err = this->all_accept(argc, argv, env);
         return err;
     }
     virtual int connect_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = this->connect(argc, argv, env);
+        err = this->all_connect(argc, argv, env);
         return err;
     }
 
     /// ...accept / ...connect
     virtual int accept(int argc, char_t** argv, char_t**env) {
+        const xos::network::sockets::sockstring_t& host = this->accept_host();
+        const xos::network::sockets::sockport_t& port = this->accept_port();
+        xos::network::sockets::endpoint& ep = this->accept_ep();
+        xos::network::sockets::transport& tp = this->accept_tp();
+        xos::network::sockets::interface &ac = this->accept_iface(), 
+                                         &cn = this->connect_iface();
+        xos::network::sockets::sockaddr_t& ad = this->connect_addr();
+        xos::network::sockets::socklen_t& al = this->connect_addrlen();
+        int err = 0;
+
+        if ((ep.attach(host, port))) {
+
+            if ((ac.open(tp))) {
+                
+                if ((ac.listen(ep))) {
+                    
+                    if ((ac.accept(cn, &ad, al))) {
+                        
+                        this->accept(cn, argc, argv, env);
+                        cn.close();
+                    }
+                }
+                ac.close();
+            }
+            ep.detach();
+        }
+        return err;
+    }
+    virtual int before_accept(int argc, char_t** argv, char** env) {
         int err = 0;
         return err;
     }
-    virtual int connect(int argc, char_t** argv, char_t**env) {
+    virtual int after_accept(int argc, char_t** argv, char** env) {
         int err = 0;
+        return err;
+    }
+    virtual int all_accept(int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_accept(argc, argv, env))) {
+            int err2 = 0;
+            err = accept(argc, argv, env);
+            if ((err2 = after_accept(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int connect(int argc, char_t** argv, char_t**env) {
+        const xos::network::sockets::sockstring_t& host = this->connect_host();
+        const xos::network::sockets::sockport_t& port = this->connect_port();
+        xos::network::sockets::endpoint& ep = this->connect_ep();
+        xos::network::sockets::transport& tp = this->connect_tp();
+        xos::network::sockets::interface &cn = this->connect_iface();
+        int err = 0;
+
+        if ((ep.attach(host, port))) {
+
+            if ((cn.open(tp))) {
+                
+                if ((cn.connect(ep))) {
+                    
+                    this->connect(cn, argc, argv, env);
+                }
+                cn.close();
+            }
+            ep.detach();
+        }
+        return err;
+    }
+    virtual int before_connect(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_connect(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_connect(int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_connect(argc, argv, env))) {
+            int err2 = 0;
+            err = connect(argc, argv, env);
+            if ((err2 = after_connect(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
         return err;
     }
 

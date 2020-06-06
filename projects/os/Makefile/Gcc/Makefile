@@ -38,5 +38,7 @@ include $(PKG)/$(MAK)/Makedefines
 SRC_DIRS = \
 $(PKG)/$(PRJ)/lib/librete \
 $(PKG)/$(PRJ)/app/rete \
+$(PKG)/$(PRJ)/app/ethernet \
+$(PKG)/$(PRJ)/app/uuid \
 
 include $(PKG)/$(MAK)/Makedirs

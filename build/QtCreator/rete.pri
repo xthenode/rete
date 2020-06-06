@@ -53,11 +53,34 @@ build_nadir_FRAMEWORKS += \
 build_nadir_LIBS += \
 
 ########################################################################
+# cifra
+#
+# pkg-config --cflags --libs cifra
+#
+
+# build cifra INCLUDEPATH
+#
+build_cifra_INCLUDEPATH += \
+
+# build cifra DEFINES
+#
+build_cifra_DEFINES += \
+
+# build cifra FRAMEWORKS
+#
+build_cifra_FRAMEWORKS += \
+
+# build cifra LIBS
+#
+build_cifra_LIBS += \
+
+########################################################################
 # rete
 
 # build rete INCLUDEPATH
 #
 build_rete_INCLUDEPATH += \
+$${build_cifra_INCLUDEPATH} \
 $${build_nadir_INCLUDEPATH} \
 
 
@@ -65,17 +88,18 @@ $${build_nadir_INCLUDEPATH} \
 #
 build_rete_DEFINES += \
 $${build_nadir_DEFINES} \
+$${build_cifra_DEFINES} \
 
 
 # build rete FRAMEWORKS
 #
 build_rete_FRAMEWORKS += \
+$${build_cifra_FRAMEWORKS} \
 $${build_nadir_FRAMEWORKS} \
 
 
 # build rete LIBS
 #
 build_rete_LIBS += \
+$${build_cifra_LIBS} \
 $${build_nadir_LIBS} \
-
-

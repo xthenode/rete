@@ -53,8 +53,8 @@ public:
 
     /// constructor / destructor
     maint()
-    : accept_ep_(0), accept_host_("localhost"), accept_port_(8080), 
-      connect_ep_(0), connect_host_("localhost"), connect_port_(80) {
+    : accept_ep_(0)/*, accept_host_("localhost"), accept_port_(8080)*/, 
+      connect_ep_(0)/*, connect_host_("localhost"), connect_port_(80)*/ {
     }
     virtual ~maint() {
     }
@@ -72,6 +72,11 @@ protected:
     virtual int connect_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         err = this->all_connect(argc, argv, env);
+        return err;
+    }
+    virtual int info_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = this->all_info(argc, argv, env);
         return err;
     }
 
@@ -160,6 +165,41 @@ protected:
             int err2 = 0;
             err = connect(argc, argv, env);
             if ((err2 = after_connect(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int info(int argc, char_t** argv, char_t**env) {
+        const xos::network::sockets::sockstring_t& host = this->connect_host();
+        const xos::network::sockets::sockport_t& port = this->connect_port();
+        xos::network::sockets::endpoint& ep = this->connect_ep();
+        int err = 0;
+
+        if ((ep.attach(host, port))) {
+            char host[1024];
+
+            if ((ep.host_name(host, sizeof(host)))) {
+                this->outlln("host = \"", host, "\"", null);
+            }
+            ep.detach();
+        }
+        return err;
+    }
+    virtual int before_info(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_info(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_info(int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_info(argc, argv, env))) {
+            int err2 = 0;
+            err = info(argc, argv, env);
+            if ((err2 = after_info(argc, argv, env))) {
                 if (!(err)) err = err2;
             }
         }
@@ -276,7 +316,7 @@ protected:
         return (xos::network::sockets::transport&)ip_v6_tcp_tp_;
     }
 
-    /// ...host / ...port
+    /*/// ...host / ...port
     virtual const xos::network::sockets::sockstring_t& accept_host() const {
         return accept_host_;
     }
@@ -288,7 +328,7 @@ protected:
     }
     virtual const xos::network::sockets::sockport_t& connect_port() const {
         return connect_port_;
-    }
+    }*/
     
     /// ...addr /  ...addrlen
     virtual xos::network::sockets::sockaddr_t& connect_addr() const {
@@ -299,8 +339,11 @@ protected:
     }
 
 protected:
-    xos::network::sockets::sockstring_t accept_host_, connect_host_;
-    xos::network::sockets::sockport_t accept_port_, connect_port_;
+    typedef typename extends::out_writer_t out_writer_t;
+
+protected:
+    /*xos::network::sockets::sockstring_t accept_host_, connect_host_;
+    xos::network::sockets::sockport_t accept_port_, connect_port_;*/
     xos::network::sockets::sockaddr_t connect_addr_;
     xos::network::sockets::socklen_t connect_addrlen_;
 

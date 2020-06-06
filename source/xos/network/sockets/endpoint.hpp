@@ -103,25 +103,15 @@ public:
             LOGGER_IS_LOGGED_DEBUG("...getaddrinfo(\"" << host << "\",...) family = " << family);
             for (addr_i = 0, addr = addrs; addr; addr = addr->ai_next) {
                 const address_family_t addrfamily = addr->ai_family;
-                char addrhost[NI_MAXHOST];
 
-                LOGGER_IS_LOGGED_DEBUG("getnameinfo(...)... family = " << addrfamily);
-                if (!(err = getnameinfo
-                    (addr->ai_addr, addr->ai_addrlen, addrhost, sizeof(addrhost)-1, 0, 0, 0))) {
-
-                    addrhost[sizeof(addrhost)-1] = 0;
-                    LOGGER_IS_LOGGED_DEBUG("...getnameinfo(..., addrhost = \"" << addrhost << "\",...)");
-                    if (family == (addrfamily)) {
-                        if ((addr_i == index) || ((last_addrindex == index) && !(addr->ai_next))) {
-                            LOGGER_IS_LOGGED_DEBUG("...found family " << family << " address[" << addr_i << "]");
-                            saddr = this->attach(addr->ai_addr, addr->ai_addrlen, port);
-                            break;
-                        } else {
-                            ++addr_i;
-                        }
+                if (family == (addrfamily)) {
+                    if ((addr_i == index) || ((last_addrindex == index) && !(addr->ai_next))) {
+                        LOGGER_IS_LOGGED_DEBUG("...found family " << family << " address[" << addr_i << "]");
+                        saddr = this->attach(addr->ai_addr, addr->ai_addrlen, port);
+                        break;
+                    } else {
+                        ++addr_i;
                     }
-                } else {
-                    LOGGER_IS_LOGGED_ERROR("...failed " << this->last_error() << " on getnameinfo(...)");
                 }
             }
             freeaddrinfo(addrs);
@@ -137,6 +127,27 @@ public:
         return 0;
     }
     virtual sockaddr_attached_t attach(const char* path) {
+        return 0;
+    }
+
+    /// host_name...
+    virtual const char* host_name(char* host, socklen_t hostlen) const {
+        if ((host) && (1 < hostlen)) {
+            attached_t saddr = 0; socklen_t saddrlen = 0;
+
+            if ((saddr = socket_address(saddrlen)) && (0 < saddrlen)) {
+                int err = 0;
+                
+                LOGGER_IS_LOGGED_DEBUG("getnameinfo(...)...");
+                if (!(err = getnameinfo(saddr, saddrlen, host, hostlen-1, 0, 0, 0))) {
+                    host[hostlen - 1] = 0;
+                    LOGGER_IS_LOGGED_DEBUG("...getnameinfo(..., host = \"" << host << "\",...)");
+                    return host;
+                } else {
+                    LOGGER_IS_LOGGED_ERROR("...failed " << this->last_error() << " on getnameinfo(...)");
+                }
+            }
+        }
         return 0;
     }
 

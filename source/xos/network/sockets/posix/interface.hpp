@@ -287,13 +287,14 @@ public:
     virtual ssize_t send_detached
     (attached_t detached, const void* buf, size_t len, send_flags_t flags) const {
         if (((attached_t)unattached) != (detached)) {
+            const char* chars = ((buf) && (128 >= len))?((const char*)buf):("...");
             ssize_t count = 0;
-            LOGGER_IS_LOGGED_DEBUG("::send(..., len = " << len << ", flags = " << flags << ")...");
+            LOGGER_IS_LOGGED_DEBUG("::send(..., buf = \"" << chars << "\", len = " << len << ", flags = " << flags << ")...");
             if (0 <= (count = ::send(detached, buf, len, flags))) {
-                LOGGER_IS_LOGGED_DEBUG("..." << count << " = ::send(..., len = " << len << ", flags = " << flags << ")...");
+                LOGGER_IS_LOGGED_DEBUG("..." << count << " = ::send(..., buf = \"" << chars << "\", len = " << len << ", flags = " << flags << ")...");
                 return count;
             } else {
-                LOGGER_IS_LOGGED_ERROR("...failed errno = " << errno << " on ::end(..., len = " << len << ", flags = " << flags << ")");
+                LOGGER_IS_LOGGED_ERROR("...failed errno = " << errno << " on ::send(..., buf = \"" << chars << "\", len = " << len << ", flags = " << flags << ")");
             }
         }
         return -1;

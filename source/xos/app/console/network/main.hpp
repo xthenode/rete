@@ -98,11 +98,13 @@ protected:
                 
                 if ((ac.listen(ep))) {
                     
-                    if ((ac.accept(cn, &ad, al))) {
-                        
-                        this->accept(cn, argc, argv, env);
-                        cn.close();
-                    }
+                    do {
+                        if ((ac.accept(cn, &ad, al))) {
+                            
+                            this->accept(cn, argc, argv, env);
+                            cn.close();
+                        }
+                    } while (!(this->accept_once() || this->accept_done()));
                 }
                 ac.close();
             }

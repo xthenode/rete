@@ -66,7 +66,16 @@ protected:
     /// ...run
     virtual int accept_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
-        err = this->all_accept(argc, argv, env);
+        bool accept_restart = false;
+        do {
+            this->set_accept_done(false);
+            if (!(err = this->all_accept(argc, argv, env))) {
+                if (!(this->accept_once())) {
+                    accept_restart = this->accept_restart();
+                }
+                this->set_accept_restart(false);
+            }
+        } while (accept_restart);
         return err;
     }
     virtual int connect_run(int argc, char_t** argv, char_t** env) {
@@ -101,10 +110,10 @@ protected:
                     do {
                         if ((ac.accept(cn, &ad, al))) {
                             
-                            this->accept(cn, argc, argv, env);
+                            this->all_accept(cn, argc, argv, env);
                             cn.close();
                         }
-                    } while (!(this->accept_once() || this->accept_done()));
+                    } while (!(this->accept_once() || this->accept_done() || this->accept_restart()));
                 }
                 ac.close();
             }
@@ -145,7 +154,7 @@ protected:
                 
                 if ((cn.connect(ep))) {
                     
-                    this->connect(cn, argc, argv, env);
+                    this->all_connect(cn, argc, argv, env);
                 }
                 cn.close();
             }
@@ -216,10 +225,48 @@ protected:
         }
         return err;
     }
+    virtual int before_accept(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_accept(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_accept(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_accept(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = accept(cn, argc, argv, env);
+            if ((err2 = after_accept(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
     virtual int connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
         if (!(err = send_request(cn, argc, argv, env))) {
             err = recv_response(cn, argc, argv, env);
+        }
+        return err;
+    }
+    virtual int before_connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_connect(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = connect(cn, argc, argv, env);
+            if ((err2 = after_connect(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
         }
         return err;
     }

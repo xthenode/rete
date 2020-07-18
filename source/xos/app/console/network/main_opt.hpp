@@ -489,7 +489,7 @@ protected:
         return (short&)connect_port_;
     }
     
-    /// ...accept_once
+    /// ...accept_...
     virtual bool& set_accept_once(bool to = true) {
         accept_once_ = to;
         return (bool&)accept_once_;
@@ -504,12 +504,19 @@ protected:
     virtual bool& accept_done() const {
         return (bool&)accept_done_;
     }
+    virtual bool& set_accept_restart(bool to = true) {
+        accept_restart_ = to;
+        return (bool&)accept_restart_;
+    }
+    virtual bool& accept_restart() const {
+        return (bool&)accept_restart_;
+    }
 
 protected:
     typedef typename extends::out_writer_t out_writer_t;
 
 protected:
-    bool accept_once_, accept_done_;
+    bool accept_once_, accept_done_, accept_restart_;
     short accept_port_, connect_port_;
     string_t accept_host_, connect_host_;
 }; /// class main_optt

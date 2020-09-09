@@ -94,10 +94,17 @@ $${RETE_SRC}/xos/network/sockets/os/interface.hpp \
 $${RETE_SRC}/xos/network/sockets/reader.hpp \
 $${RETE_SRC}/xos/network/sockets/writer.hpp \
 \
+$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/base/main.hpp \
+$${RETE_SRC}/xos/app/console/network/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/client/main.hpp \
+$${RETE_SRC}/xos/app/console/network/server/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/server/main.hpp \
 $${RETE_SRC}/xos/app/console/network/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/network/main.hpp \
 $${RETE_SRC}/xos/app/console/rete/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/rete/main.hpp \
+\
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
 # rete_exe SOURCES
@@ -115,6 +122,7 @@ $${RETE_SRC}/xos/network/sockets/os/interface.cpp \
 \
 $${RETE_SRC}/xos/app/console/rete/main_opt.cpp \
 $${RETE_SRC}/xos/app/console/rete/main.cpp \
+\
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################

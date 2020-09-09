@@ -16,28 +16,28 @@
 ///   File: main_opt.cpp
 ///
 /// Author: $author$
-///   Date: 8/13/2020
+///   Date: 9/6/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/network/client/main_opt.hpp"
+#include "xos/app/console/network/base/main_opt.hpp"
 
-//#define XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE
-#if defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
-//#include "xos/console/main_main.cpp"
-#endif /// defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_INSTANCE
+#if defined(XOS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_INSTANCE)
+//#include "xos/app/console/network/base/main_opt.cpp"
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_INSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
 namespace network {
-namespace client {
+namespace base {
 
 ///  Class: main_optt
-#if defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
+#if defined(XOS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_INSTANCE)
 static main_opt the_main_opt;
-#endif /// defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_BASE_MAIN_OPT_INSTANCE)
 
 
-} /// namespace client
+} /// namespace base
 } /// namespace network
 } /// namespace console
 } /// namespace app

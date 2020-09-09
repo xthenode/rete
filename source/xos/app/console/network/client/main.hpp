@@ -22,7 +22,7 @@
 #define XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_HPP
 
 #include "xos/app/console/network/client/main_opt.hpp"
-#include "xos/network/sockets/ip/v4/endpoint.hpp"
+/*#include "xos/network/sockets/ip/v4/endpoint.hpp"
 #include "xos/network/sockets/ip/v4/tcp/transport.hpp"
 #include "xos/network/sockets/ip/v4/udp/transport.hpp"
 #include "xos/network/sockets/ip/v6/endpoint.hpp"
@@ -30,7 +30,7 @@
 #include "xos/network/sockets/ip/v6/udp/transport.hpp"
 #include "xos/network/sockets/os/interface.hpp"
 #include "xos/network/sockets/reader.hpp"
-#include "xos/network/sockets/writer.hpp"
+#include "xos/network/sockets/writer.hpp"*/
 
 namespace xos {
 namespace app {
@@ -68,11 +68,11 @@ protected:
         err = this->all_connect(argc, argv, env);
         return err;
     }
-    virtual int info_run(int argc, char_t** argv, char_t** env) {
+    /*virtual int info_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         err = this->all_info(argc, argv, env);
         return err;
-    }
+    }*/
 
     /// ...connect / ...info
     virtual int connect(int argc, char_t** argv, char_t**env) {
@@ -116,7 +116,7 @@ protected:
         }
         return err;
     }
-    virtual int info(int argc, char_t** argv, char_t**env) {
+    /*virtual int info(int argc, char_t** argv, char_t**env) {
         const xos::network::sockets::sockstring_t& host = this->connect_host();
         const xos::network::sockets::sockport_t& port = this->connect_port();
         xos::network::sockets::endpoint& ep = this->connect_ep();
@@ -150,7 +150,7 @@ protected:
             }
         }
         return err;
-    }
+    }*/
 
     /// ...connect
     virtual int connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
@@ -190,45 +190,9 @@ protected:
         return err;
     }
 
-    /// ...iface
+    /*/// ...iface
     virtual xos::network::sockets::interface& connect_iface() const {
         return (xos::network::sockets::interface&)connect_iface_;
-    }
-
-    /// ...ep
-    xos::network::sockets::endpoint& (derives::*connect_ep_)() const;
-    virtual xos::network::sockets::endpoint& connect_ep() const {
-        if ((this->connect_ep_)) {
-            return (this->*connect_ep_)();
-        }
-        return default_connect_ep();
-    }
-    virtual xos::network::sockets::endpoint& default_connect_ep() const {
-        return connect_ip_v4_ep();
-    }
-    virtual xos::network::sockets::endpoint& connect_ip_v4_ep() const {
-        return (xos::network::sockets::endpoint&)ip_v4_ep_;
-    }
-    virtual xos::network::sockets::endpoint& connect_ip_v6_ep() const {
-        return (xos::network::sockets::endpoint&)ip_v6_ep_;
-    }
-
-    /// ...tp
-    xos::network::sockets::transport& (derives::*connect_tp_)() const;
-    virtual xos::network::sockets::transport& connect_tp() const {
-        if ((this->connect_tp_)) {
-            return (this->*connect_tp_)();
-        }
-        return default_connect_tp();
-    }
-    virtual xos::network::sockets::transport& default_connect_tp() const {
-        return connect_ip_v4_tcp_tp();
-    }
-    virtual xos::network::sockets::transport& connect_ip_v4_tcp_tp() const {
-        return (xos::network::sockets::transport&)ip_v4_tcp_tp_;
-    }
-    virtual xos::network::sockets::transport& connect_ip_v6_tcp_tp() const {
-        return (xos::network::sockets::transport&)ip_v6_tcp_tp_;
     }
 
     /// ...addr /  ...addrlen
@@ -237,10 +201,46 @@ protected:
     }
     virtual xos::network::sockets::socklen_t& connect_addrlen() const {
         return (xos::network::sockets::socklen_t&)connect_addrlen_;
+    }*/
+
+    /// ...ep
+    xos::network::sockets::endpoint& (derives::*connect_ep_)() const;
+    virtual xos::network::sockets::endpoint& connect_ep() const {
+        if ((this->connect_ep_)) {
+            return (this->*connect_ep_)();
+        }
+        return this->default_connect_ep();
+    }
+    virtual xos::network::sockets::endpoint& default_connect_ep() const {
+        return this->connect_ip_v4_ep();
+    }
+    virtual xos::network::sockets::endpoint& connect_ip_v4_ep() const {
+        return /*(xos::network::sockets::endpoint&)ip_v4_ep_*/this->ip_v4_ep();
+    }
+    virtual xos::network::sockets::endpoint& connect_ip_v6_ep() const {
+        return /*(xos::network::sockets::endpoint&)ip_v6_ep_*/this->ip_v6_ep();
+    }
+
+    /// ...tp
+    xos::network::sockets::transport& (derives::*connect_tp_)() const;
+    virtual xos::network::sockets::transport& connect_tp() const {
+        if ((this->connect_tp_)) {
+            return (this->*connect_tp_)();
+        }
+        return this->default_connect_tp();
+    }
+    virtual xos::network::sockets::transport& default_connect_tp() const {
+        return this->connect_ip_v4_tcp_tp();
+    }
+    virtual xos::network::sockets::transport& connect_ip_v4_tcp_tp() const {
+        return /*(xos::network::sockets::transport&)ip_v4_tcp_tp_*/this->ip_v4_tcp_tp();
+    }
+    virtual xos::network::sockets::transport& connect_ip_v6_tcp_tp() const {
+        return /*(xos::network::sockets::transport&)ip_v6_tcp_tp_*/this->ip_v6_tcp_tp();
     }
 
 protected:
-    xos::network::sockets::sockaddr_t connect_addr_;
+    /*xos::network::sockets::sockaddr_t connect_addr_;
     xos::network::sockets::socklen_t connect_addrlen_;
 
     xos::network::sockets::ip::v4::endpoint ip_v4_ep_;
@@ -251,7 +251,7 @@ protected:
     xos::network::sockets::ip::v6::tcp::transport ip_v6_tcp_tp_;
     xos::network::sockets::ip::v6::udp::transport ip_v6_udp_tp_;
     
-    xos::network::sockets::os::interface connect_iface_;
+    xos::network::sockets::os::interface connect_iface_;*/
 }; /// class maint
 typedef maint<> main;
 

@@ -53,7 +53,7 @@ private:
     }
 
 protected:
-    /// accept / connect
+    /*/// accept / connect
     using extends::accept;
     virtual int accept(int argc, char_t** argv, char_t**env) {
         const xos::network::sockets::sockstring_t& host = this->accept_host();
@@ -105,7 +105,7 @@ protected:
             ep.detach();
         }
         return err;
-    }
+    }*/
     
     /// send... / recv...
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {

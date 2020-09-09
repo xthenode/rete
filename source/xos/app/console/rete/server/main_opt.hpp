@@ -13,32 +13,45 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.cpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 8/13/2020
+///   Date: 9/9/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/network/client/main_opt.hpp"
+#ifndef XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPT_HPP
 
-//#define XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE
-#if defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
-//#include "xos/console/main_main.cpp"
-#endif /// defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
+#include "xos/app/console/network/server/main.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace client {
+namespace rete {
+namespace server {
 
-///  Class: main_optt
-#if defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
-static main_opt the_main_opt;
-#endif /// defined(XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_OPT_INSTANCE)
+/// class main_optt
+template <class TExtends = network::server::main, class TImplements = typename TExtends::implements>
+class exported main_optt: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef main_optt derives; 
+    
+    /// constructors / destructor
+    main_optt() {
+    }
+    virtual ~main_optt() {
+    }
+private:
+    main_optt(const main_optt& copy) {
+    }
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
-
-} /// namespace client
-} /// namespace network
+} /// namespace server
+} /// namespace rete
 } /// namespace console
 } /// namespace app
 } /// namespace xos
+
+#endif /// XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPT_HPP

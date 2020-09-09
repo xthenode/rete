@@ -21,7 +21,22 @@
 #ifndef XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
 
-#include "xos/app/console/network/main.hpp"
+//#include "xos/app/console/network/main.hpp"
+#include "xos/app/console/network/client/main.hpp"
+#include "xos/app/console/network/server/main.hpp"
+
+#define XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_CHARS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_CLIENT_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_MAIN_OPTIONS_CHARS
+
+#define XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_OPTIONS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_CLIENT_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_MAIN_OPTIONS_OPTIONS 
+
+#define XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_CHARS 0
+#define XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_ARGS 0
 
 namespace xos {
 namespace app {
@@ -29,7 +44,9 @@ namespace console {
 namespace rete {
 
 /// class main_optt
-template <class TExtends = network::main, class TImplements = typename TExtends::implements>
+template 
+<class TExtends = network::server::maint
+ <network::server::main_optt<network::client::main> >, class TImplements = typename TExtends::implements>
 class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
@@ -49,7 +66,23 @@ public:
 private:
     main_optt(const main_optt& copy): extends(copy) {
     }
-public:
+    
+protected:
+    /// ...options...
+    virtual const char_t* options(const struct option*& longopts) {
+        static const char_t* chars = XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_CHARS;
+        static struct option optstruct[]= {
+            XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_OPTIONS
+            {0, 0, 0, 0}};
+        longopts = optstruct;
+        return chars;
+    }
+
+    /// ...arguments...
+    virtual const char_t* arguments(const char_t**& args) {
+        args = XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_ARGS;
+        return XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_CHARS;
+    }
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

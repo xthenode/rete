@@ -20,13 +20,20 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/network/main.hpp"
 
+//#define XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE
+#if defined(XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE)
+//#include "xos/console/main_main.cpp"
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE)
+
 namespace xos {
 namespace app {
 namespace console {
 namespace network {
 
-/// class maint
-//static main the_main;
+///  Class: maint
+#if defined(XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE)
+static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE)
 
 } /// namespace network
 } /// namespace console

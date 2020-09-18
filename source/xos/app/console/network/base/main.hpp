@@ -106,13 +106,151 @@ protected:
         return err;
     }
 
-    /// send... / recv...
+    /// ...send_request
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
         return err;
     }
+    virtual int before_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_send_request(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = send_request(cn, argc, argv, env);
+            if ((err2 = after_send_request(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_response
     virtual int recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
+        return err;
+    }
+    virtual int before_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_recv_response(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_response(cn, argc, argv, env);
+            if ((err2 = after_recv_response(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_request
+    virtual int recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_recv_request(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_request(cn, argc, argv, env);
+            if ((err2 = after_recv_request(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...send_response
+    virtual int send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        return err;
+    }
+    virtual int before_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_send_response(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = send_response(cn, argc, argv, env);
+            if ((err2 = after_send_response(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    
+    /// recv_crlf2
+    virtual int recv_crlf2(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        enum { ch, cr, lf, lfcr } s = ch;
+        while (0 < (amount = cn.recv(&c, 1, 0))) {
+            r.append(&c, 1);
+            switch (c) {
+            case '\r':
+                switch (s) {
+                case ch:
+                    s = cr;
+                    break;
+                case cr:
+                    s = cr;
+                    break;
+                case lf:
+                    s = lfcr;
+                    break;
+                case lfcr:
+                    break;
+                }
+                break;
+            case '\n':
+                switch (s) {
+                case ch:
+                    s = ch;
+                    break;
+                case cr:
+                    s = lf;
+                    break;
+                case lf:
+                    s = ch;
+                    break;
+                case lfcr:
+                    return err;
+                    break;
+                }
+                break;
+            default:
+                s = ch;
+                break;
+            }
+        }
         return err;
     }
 

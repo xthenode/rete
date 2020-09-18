@@ -21,19 +21,29 @@
 #ifndef XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_RETE_MAIN_OPT_HPP
 
-//#include "xos/app/console/network/main.hpp"
-#include "xos/app/console/network/client/main.hpp"
-#include "xos/app/console/network/server/main.hpp"
+/*#include "xos/app/console/network/main.hpp"*/
+/*#include "xos/app/console/network/client/main.hpp"
+#include "xos/app/console/network/server/main.hpp"*/
+#include "xos/app/console/rete/client/main.hpp"
+#include "xos/app/console/rete/server/main.hpp"
 
 #define XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_CHARS \
-    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    /*XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
     XOS_NETWORK_CLIENT_MAIN_OPTIONS_CHARS_EXTEND \
-    XOS_NETWORK_MAIN_OPTIONS_CHARS
+    XOS_NETWORK_MAIN_OPTIONS_CHARS */\
+    /*XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_CHARS */\
+    XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_APP_CONSOLE_RETE_CLIENT_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_BASE_MAIN_OPTIONS_CHARS \
 
 #define XOS_APP_CONSOLE_RETE_MAIN_OPTIONS_OPTIONS \
-    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    /*XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
     XOS_NETWORK_CLIENT_MAIN_OPTIONS_OPTIONS_EXTEND \
-    XOS_NETWORK_MAIN_OPTIONS_OPTIONS 
+    XOS_NETWORK_MAIN_OPTIONS_OPTIONS */\
+    /*XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_OPTIONS */\
+    XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_APP_CONSOLE_RETE_CLIENT_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_BASE_MAIN_OPTIONS_OPTIONS \
 
 #define XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_CHARS 0
 #define XOS_APP_CONSOLE_RETE_MAIN_ARUMENTS_ARGS 0
@@ -45,8 +55,10 @@ namespace rete {
 
 /// class main_optt
 template 
-<class TExtends = network::server::maint
- <network::server::main_optt<network::client::main> >, class TImplements = typename TExtends::implements>
+<class TExtends = /*network::server::maint
+ <network::server::main_optt<network::client::main> >*/
+ /*network::main*/rete::server::maint<rete::server::main_optt
+ <network::server::maint<network::server::main_optt<rete::client::main> > > >, class TImplements = typename TExtends::implements>
 class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
@@ -55,8 +67,8 @@ public:
 
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+    /*typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };*/
 
     /// constructor / destructor
     main_optt() {
@@ -64,7 +76,7 @@ public:
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
     
 protected:

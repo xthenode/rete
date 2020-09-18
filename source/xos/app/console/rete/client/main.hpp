@@ -37,14 +37,49 @@ public:
     typedef TExtends extends;
     typedef maint derives; 
     
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+
     /// constructors / destructor
-    maint() {
+    maint(): connect_request_("GET / HTTP/1.0\r\n\r\n") {
     }
     virtual ~maint() {
     }
 private:
     maint(const maint& copy) {
     }
+    
+protected:
+    /// ...send_request
+    virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+        if ((chars = connect_request_.has_chars(length))) {
+            cn.send(chars, length, 0);
+        }
+        return err;
+    }
+
+    /// ...recv_response
+    virtual int recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        char_t c = 0;
+        if (!(err = this->recv_crlf2(connect_response_, c, cn, argc, argv, env))) {
+            size_t length = 0;
+            const char_t* chars = 0;
+            if ((chars = connect_response_.has_chars(length))) {
+                this->out(chars, length);
+            }
+        }
+        return err;
+    }
+
+protected:
+    string_t connect_request_, connect_response_;
 }; /// class maint
 typedef maint<> main;
 

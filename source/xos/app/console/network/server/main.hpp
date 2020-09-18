@@ -118,8 +118,8 @@ protected:
     /// ...accept
     virtual int accept(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
-        if (!(err = recv_request(cn, argc, argv, env))) {
-            err = send_response(cn, argc, argv, env);
+        if (!(err = all_recv_request(cn, argc, argv, env))) {
+            err = all_send_response(cn, argc, argv, env);
         }
         return err;
     }
@@ -143,13 +143,53 @@ protected:
         return err;
     }
 
-    /// send... / recv...
+    /// ...send_response
     virtual int send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
         return err;
     }
+    virtual int before_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_send_response(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = send_response(cn, argc, argv, env);
+            if ((err2 = after_send_response(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_request
     virtual int recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
+        return err;
+    }
+    virtual int before_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_recv_request(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_request(cn, argc, argv, env);
+            if ((err2 = after_recv_request(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
         return err;
     }
 

@@ -37,14 +37,49 @@ public:
     typedef TExtends extends;
     typedef maint derives; 
     
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+
     /// constructors / destructor
-    maint() {
+    maint(): accept_response_("HTTP/1.0 200 OK\r\n\r\nOK\r\n") {
     }
     virtual ~maint() {
     }
 private:
     maint(const maint& copy) {
     }
+
+protected:
+    /// ...recv_request
+    virtual int recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        char_t c = 0;
+        if (!(err = this->recv_crlf2(accept_request_, c, cn, argc, argv, env))) {
+            size_t length = 0;
+            const char_t* chars = 0;
+            if ((chars = accept_request_.has_chars(length))) {
+                this->out(chars, length);
+            }
+        }
+        return err;
+    }
+    
+    /// ...send_response
+    virtual int send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+        if ((chars = accept_response_.has_chars(length))) {
+            cn.send(chars, length, 0);
+        }
+        return err;
+    }
+
+protected:
+    string_t accept_response_, accept_request_;
 }; /// class maint
 typedef maint<> main;
 

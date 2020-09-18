@@ -38,18 +38,18 @@ public:
 
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+    /*typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };*/
 
     /// constructor / destructor
     maint()
-    : request_("GET / HTTP/1.0\r\n\r\n"), 
-      response_("HTTP/1.0 200 Ok\r\n\r\nOk\r\n") {
+    /*: request_("GET / HTTP/1.0\r\n\r\n"), 
+      response_("HTTP/1.0 200 Ok\r\n\r\nOk\r\n")*/ {
     }
     virtual ~maint() {
     }
 private:
-    maint(const maint& copy): extends(copy) {
+    maint(const maint& copy) {
     }
 
 protected:
@@ -107,7 +107,7 @@ protected:
         return err;
     }*/
     
-    /// send... / recv...
+    /*/// send... / recv...
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         xos::network::sockets::sockstring_t &rq = this->request();
         int err = 0;
@@ -181,10 +181,10 @@ protected:
     }
     virtual xos::network::sockets::sockstring_t& response() const {
         return (xos::network::sockets::sockstring_t&)response_;
-    }
+    }*/
 
 protected:
-    xos::network::sockets::sockstring_t request_, response_;
+    /*xos::network::sockets::sockstring_t request_, response_;*/
 }; /// class maint
 typedef maint<> main;
 

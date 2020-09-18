@@ -22,7 +22,7 @@
 #define XOS_APP_CONSOLE_NETWORK_MAIN_HPP
 
 #include "xos/app/console/network/main_opt.hpp"
-#include "xos/network/sockets/ip/v4/endpoint.hpp"
+/*#include "xos/network/sockets/ip/v4/endpoint.hpp"
 #include "xos/network/sockets/ip/v4/tcp/transport.hpp"
 #include "xos/network/sockets/ip/v4/udp/transport.hpp"
 #include "xos/network/sockets/ip/v6/endpoint.hpp"
@@ -30,7 +30,7 @@
 #include "xos/network/sockets/ip/v6/udp/transport.hpp"
 #include "xos/network/sockets/os/interface.hpp"
 #include "xos/network/sockets/reader.hpp"
-#include "xos/network/sockets/writer.hpp"
+#include "xos/network/sockets/writer.hpp"*/
 
 namespace xos {
 namespace app {
@@ -48,13 +48,13 @@ public:
 
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+    /*typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };*/
 
     /// constructor / destructor
     maint()
-    : accept_ep_(0)/*, accept_host_("localhost"), accept_port_(8080)*/, 
-      connect_ep_(0)/*, connect_host_("localhost"), connect_port_(80)*/ {
+    /*: accept_ep_(0), accept_host_("localhost"), accept_port_(8080), 
+      connect_ep_(0), connect_host_("localhost"), connect_port_(80)*/ {
     }
     virtual ~maint() {
     }
@@ -63,7 +63,7 @@ private:
     }
 
 protected:
-    /// ...run
+    /*/// ...run
     virtual int accept_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         bool accept_restart = false;
@@ -269,7 +269,7 @@ protected:
             }
         }
         return err;
-    }
+    }*/
 
     /// send... / recv...
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
@@ -289,7 +289,7 @@ protected:
         return err;
     }
 
-    /// ...iface
+    /*/// ...iface
     virtual xos::network::sockets::interface& accept_iface() const {
         return (xos::network::sockets::interface&)accept_iface_;
     }
@@ -365,7 +365,7 @@ protected:
         return (xos::network::sockets::transport&)ip_v6_tcp_tp_;
     }
 
-    /*/// ...host / ...port
+    /// ...host / ...port
     virtual const xos::network::sockets::sockstring_t& accept_host() const {
         return accept_host_;
     }
@@ -377,7 +377,7 @@ protected:
     }
     virtual const xos::network::sockets::sockport_t& connect_port() const {
         return connect_port_;
-    }*/
+    }
     
     /// ...addr /  ...addrlen
     virtual xos::network::sockets::sockaddr_t& connect_addr() const {
@@ -391,8 +391,8 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
 
 protected:
-    /*xos::network::sockets::sockstring_t accept_host_, connect_host_;
-    xos::network::sockets::sockport_t accept_port_, connect_port_;*/
+    xos::network::sockets::sockstring_t accept_host_, connect_host_;
+    xos::network::sockets::sockport_t accept_port_, connect_port_;
     xos::network::sockets::sockaddr_t connect_addr_;
     xos::network::sockets::socklen_t connect_addrlen_;
 
@@ -404,7 +404,7 @@ protected:
     xos::network::sockets::ip::v6::tcp::transport ip_v6_tcp_tp_;
     xos::network::sockets::ip::v6::udp::transport ip_v6_udp_tp_;
     
-    xos::network::sockets::os::interface accept_iface_, connect_iface_;
+    xos::network::sockets::os::interface accept_iface_, connect_iface_;*/
 }; /// class maint
 typedef maint<> main;
 

@@ -21,8 +21,11 @@
 #ifndef XOS_APP_CONSOLE_NETWORK_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_NETWORK_MAIN_OPT_HPP
 
-#include "xos/app/console/main.hpp"
+//#include "xos/app/console/main.hpp"
+#include "xos/app/console/network/client/main.hpp"
+#include "xos/app/console/network/server/main.hpp"
 
+/*
 #define XOS_NETWORK_MAIN_ACCEPT_ONCE_OPT "accept-once"
 #define XOS_NETWORK_MAIN_ACCEPT_ONCE_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_NETWORK_MAIN_ACCEPT_ONCE_OPTARG_RESULT 0
@@ -127,6 +130,20 @@
 
 #define XOS_NETWORK_MAIN_ARUMENTS_CHARS 0
 #define XOS_NETWORK_MAIN_ARUMENTS_ARGS 0
+*/
+
+#define XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_CHARS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_CLIENT_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_BASE_MAIN_OPTIONS_CHARS
+
+#define XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_OPTIONS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_CLIENT_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_BASE_MAIN_OPTIONS_OPTIONS 
+
+#define XOS_APP_CONSOLE_NETWORK_MAIN_ARUMENTS_CHARS 0
+#define XOS_APP_CONSOLE_NETWORK_MAIN_ARUMENTS_ARGS 0
 
 namespace xos {
 namespace app {
@@ -135,7 +152,8 @@ namespace network {
 
 /// class main_optt
 template 
-<class TExtends = console::main, class TImplements = typename TExtends::implements>
+<class TExtends = console::network::server::maint
+ <console::network::server::main_optt<console::network::client::main> >, class TImplements = typename TExtends::implements>
 class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
@@ -144,24 +162,24 @@ public:
 
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
-    typedef typename extends::end_char_t end_char_t;
-    enum { end_char = extends::end_char };
+    /*typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };*/
 
     /// constructor / destructor
     main_optt()
-    : run_(0), 
+    /*: run_(0), 
       accept_once_(false), accept_done_(false),
       accept_port_(8080), connect_port_(80),
-      accept_host_("*"), connect_host_("localhost") {
+      accept_host_("*"), connect_host_("localhost")*/ {
     }
     virtual ~main_optt() {
     }
 private:
-    main_optt(const main_optt& copy): extends(copy) {
+    main_optt(const main_optt& copy) {
     }
 
 protected:
-    /// ...run
+    /*/// ...run
     int (derives::*run_)(int argc, char_t** argv, char_t** env);
     virtual int set_accept_once_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
@@ -262,10 +280,10 @@ protected:
             }
         }
         return err;
-    }
+    }*/
 
     /// ...options...
-    virtual int on_accept_once_option
+    /*virtual int on_accept_once_option
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
@@ -413,15 +431,27 @@ protected:
             {0, 0, 0, 0}};
         longopts = optstruct;
         return chars;
+    }*/
+    virtual const char_t* options(const struct option*& longopts) {
+        static const char_t* chars = XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_CHARS;
+        static struct option optstruct[]= {
+            XOS_APP_CONSOLE_NETWORK_MAIN_OPTIONS_OPTIONS
+            {0, 0, 0, 0}};
+        longopts = optstruct;
+        return chars;
     }
 
     /// ...arguments...
-    virtual const char_t* arguments(const char_t**& args) {
+    /*virtual const char_t* arguments(const char_t**& args) {
         args = XOS_NETWORK_MAIN_ARUMENTS_ARGS;
         return XOS_NETWORK_MAIN_ARUMENTS_CHARS;
+    }*/
+    virtual const char_t* arguments(const char_t**& args) {
+        args = XOS_APP_CONSOLE_NETWORK_MAIN_ARUMENTS_ARGS;
+        return XOS_APP_CONSOLE_NETWORK_MAIN_ARUMENTS_CHARS;
     }
     
-    /// ...accept_host / ...accept_port
+    /*/// ...accept_host / ...accept_port
     virtual string_t& set_accept_host(const string_t& to) {
         const char_t* chars = to.has_chars();
         if ((chars)) accept_host_.assign(to);
@@ -518,7 +548,7 @@ protected:
 protected:
     bool accept_once_, accept_done_, accept_restart_;
     short accept_port_, connect_port_;
-    string_t accept_host_, connect_host_;
+    string_t accept_host_, connect_host_;*/
 }; /// class main_optt
 typedef main_optt<> main_opt;
 

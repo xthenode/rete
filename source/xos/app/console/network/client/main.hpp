@@ -22,7 +22,8 @@
 #define XOS_APP_CONSOLE_NETWORK_CLIENT_MAIN_HPP
 
 #include "xos/app/console/network/client/main_opt.hpp"
-/*#include "xos/network/sockets/ip/v4/endpoint.hpp"
+/*
+#include "xos/network/sockets/ip/v4/endpoint.hpp"
 #include "xos/network/sockets/ip/v4/tcp/transport.hpp"
 #include "xos/network/sockets/ip/v4/udp/transport.hpp"
 #include "xos/network/sockets/ip/v6/endpoint.hpp"
@@ -30,7 +31,8 @@
 #include "xos/network/sockets/ip/v6/udp/transport.hpp"
 #include "xos/network/sockets/os/interface.hpp"
 #include "xos/network/sockets/reader.hpp"
-#include "xos/network/sockets/writer.hpp"*/
+#include "xos/network/sockets/writer.hpp"
+*/
 
 namespace xos {
 namespace app {
@@ -155,8 +157,8 @@ protected:
     /// ...connect
     virtual int connect(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
-        if (!(err = send_request(cn, argc, argv, env))) {
-            err = recv_response(cn, argc, argv, env);
+        if (!(err = all_send_request(cn, argc, argv, env))) {
+            err = all_recv_response(cn, argc, argv, env);
         }
         return err;
     }
@@ -180,13 +182,53 @@ protected:
         return err;
     }
 
-    /// send... / recv...
+    /// ...send_request
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
         return err;
     }
+    virtual int before_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_send_request(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = send_request(cn, argc, argv, env);
+            if ((err2 = after_send_request(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_response
     virtual int recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
+        return err;
+    }
+    virtual int before_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_recv_response(cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_response(cn, argc, argv, env);
+            if ((err2 = after_recv_response(cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
         return err;
     }
 

@@ -23,6 +23,12 @@
 
 #include "xos/app/console/network/server/main.hpp"
 
+#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+
+#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+
 namespace xos {
 namespace app {
 namespace console {
@@ -37,6 +43,12 @@ public:
     typedef TExtends extends;
     typedef main_optt derives; 
     
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
+    typedef typename extends::string_t string_t;
+    typedef typename extends::char_t char_t;
+
     /// constructors / destructor
     main_optt() {
     }

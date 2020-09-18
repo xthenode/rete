@@ -13,72 +13,69 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: reted.pri
+#   File: network.pri
 #
 # Author: $author$
-#   Date: 9/8/2020
+#   Date: 9/9/2020
 #
-# QtCreator .pri file for rete executable reted
+# QtCreator .pri file for rete executable network
 ########################################################################
 
 ########################################################################
-# reted
+# network
 
-# reted TARGET
+# network TARGET
 #
-reted_TARGET = reted
+network_TARGET = network
 
-# reted INCLUDEPATH
+# network INCLUDEPATH
 #
-reted_INCLUDEPATH += \
+network_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# reted DEFINES
+# network DEFINES
 #
-reted_DEFINES += \
+network_DEFINES += \
 $${rete_DEFINES} \
+XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE \
 
 ########################################################################
-# reted OBJECTIVE_HEADERS
+# network OBJECTIVE_HEADERS
 #
-#reted_OBJECTIVE_HEADERS += \
+#network_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# reted OBJECTIVE_SOURCES
+# network OBJECTIVE_SOURCES
 #
-#reted_OBJECTIVE_SOURCES += \
+#network_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# reted HEADERS
+# network HEADERS
 #
-reted_HEADERS += \
-$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/base/main.hpp \
-$${RETE_SRC}/xos/app/console/network/server/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/server/main.hpp \
-$${RETE_SRC}/xos/app/console/rete/server/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/rete/server/main.hpp \
+network_HEADERS += \
+$${RETE_SRC}/xos/app/console/network/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/main.hpp \
 \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
-# reted SOURCES
+# network SOURCES
 #
-reted_SOURCES += \
-$${RETE_SRC}/xos/app/console/rete/server/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/rete/server/main.cpp \
+network_SOURCES += \
+$${RETE_SRC}/xos/app/console/network/main_opt.cpp \
+$${RETE_SRC}/xos/app/console/network/main.cpp \
 \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################
-# reted FRAMEWORKS
+# network FRAMEWORKS
 #
-reted_FRAMEWORKS += \
+network_FRAMEWORKS += \
 $${rete_FRAMEWORKS} \
 
-# reted LIBS
+# network LIBS
 #
-reted_LIBS += \
+network_LIBS += \
 $${rete_LIBS} \
 
 

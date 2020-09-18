@@ -102,6 +102,11 @@ $${RETE_SRC}/xos/app/console/network/server/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/network/server/main.hpp \
 $${RETE_SRC}/xos/app/console/network/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/network/main.hpp \
+\
+$${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/rete/client/main.hpp \
+$${RETE_SRC}/xos/app/console/rete/server/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/rete/server/main.hpp \
 $${RETE_SRC}/xos/app/console/rete/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/rete/main.hpp \
 \
@@ -110,16 +115,6 @@ $${NADIR_SRC}/xos/console/main_main.hpp \
 # rete_exe SOURCES
 #
 rete_exe_SOURCES += \
-$${NADIR_SRC}/xos/base/opened.cpp \
-\
-$${RETE_SRC}/xos/network/addresses.cpp \
-$${RETE_SRC}/xos/network/transports.cpp \
-$${RETE_SRC}/xos/network/endpoints.cpp \
-$${RETE_SRC}/xos/network/sockets/reader.cpp \
-$${RETE_SRC}/xos/network/sockets/writer.cpp \
-$${RETE_SRC}/xos/network/sockets/os/os.cpp \
-$${RETE_SRC}/xos/network/sockets/os/interface.cpp \
-\
 $${RETE_SRC}/xos/app/console/rete/main_opt.cpp \
 $${RETE_SRC}/xos/app/console/rete/main.cpp \
 \

@@ -53,6 +53,10 @@ $${rete_DEFINES} \
 # retec HEADERS
 #
 retec_HEADERS += \
+$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/base/main.hpp \
+$${RETE_SRC}/xos/app/console/network/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/network/client/main.hpp \
 $${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/rete/client/main.hpp \
 \

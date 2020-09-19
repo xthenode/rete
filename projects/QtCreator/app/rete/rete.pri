@@ -37,6 +37,8 @@ $${rete_INCLUDEPATH} \
 #
 rete_exe_DEFINES += \
 $${rete_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_RETE_MAIN_INSTANCE \
 
 ########################################################################
 # rete_exe OBJECTIVE_HEADERS

@@ -13,74 +13,70 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: reted.pri
+#   File: reteb.pri
 #
 # Author: $author$
-#   Date: 9/8/2020
+#   Date: 9/19/2020
 #
-# QtCreator .pri file for rete executable reted
+# QtCreator .pri file for rete executable reteb
 ########################################################################
 
 ########################################################################
-# reted
+# reteb
 
-# reted TARGET
+# reteb TARGET
 #
-reted_TARGET = reted
+reteb_TARGET = reteb
 
-# reted INCLUDEPATH
+# reteb INCLUDEPATH
 #
-reted_INCLUDEPATH += \
+reteb_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# reted DEFINES
+# reteb DEFINES
 #
-reted_DEFINES += \
+reteb_DEFINES += \
 $${rete_DEFINES} \
 LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
-XOS_APP_CONSOLE_RETE_SERVER_MAIN_INSTANCE \
+XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE \
 
 ########################################################################
-# reted OBJECTIVE_HEADERS
+# reteb OBJECTIVE_HEADERS
 #
-#reted_OBJECTIVE_HEADERS += \
+#reteb_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# reted OBJECTIVE_SOURCES
+# reteb OBJECTIVE_SOURCES
 #
-#reted_OBJECTIVE_SOURCES += \
+#reteb_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# reted HEADERS
+# reteb HEADERS
 #
-reted_HEADERS += \
-$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/base/main.hpp \
-$${RETE_SRC}/xos/app/console/network/server/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/server/main.hpp \
-$${RETE_SRC}/xos/app/console/rete/server/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/rete/server/main.hpp \
+reteb_HEADERS += \
+$${RETE_SRC}/xos/app/console/rete/base/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/rete/base/main.hpp \
 \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
-# reted SOURCES
+# reteb SOURCES
 #
-reted_SOURCES += \
-$${RETE_SRC}/xos/app/console/rete/server/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/rete/server/main.cpp \
+reteb_SOURCES += \
+$${RETE_SRC}/xos/app/console/rete/base/main_opt.cpp \
+$${RETE_SRC}/xos/app/console/rete/base/main.cpp \
 \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################
-# reted FRAMEWORKS
+# reteb FRAMEWORKS
 #
-reted_FRAMEWORKS += \
+reteb_FRAMEWORKS += \
 $${rete_FRAMEWORKS} \
 
-# reted LIBS
+# reteb LIBS
 #
-reted_LIBS += \
+reteb_LIBS += \
 $${rete_LIBS} \
 
 

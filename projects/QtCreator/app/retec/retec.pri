@@ -37,6 +37,8 @@ $${rete_INCLUDEPATH} \
 #
 retec_DEFINES += \
 $${rete_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE \
 
 ########################################################################
 # retec OBJECTIVE_HEADERS
@@ -60,7 +62,7 @@ $${RETE_SRC}/xos/app/console/network/client/main.hpp \
 $${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
 $${RETE_SRC}/xos/app/console/rete/client/main.hpp \
 \
-$${NADIR_SRC}/xos/console/main_main.cpp \
+$${NADIR_SRC}/xos/console/main_main.hpp \
 
 # retec SOURCES
 #

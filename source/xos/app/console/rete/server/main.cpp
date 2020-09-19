@@ -20,7 +20,7 @@
 ///////////////////////////////////////////////////////////////////////
 #include "xos/app/console/rete/server/main.hpp"
 
-#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_INSTANCE
+//#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_INSTANCE
 #if defined(XOS_APP_CONSOLE_RETE_SERVER_MAIN_INSTANCE)
 //#include "xos/console/main_main.cpp"
 #endif /// defined(XOS_APP_CONSOLE_RETE_SERVER_MAIN_INSTANCE)

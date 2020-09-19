@@ -13,32 +13,45 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.cpp
+///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 9/9/2020
+///   Date: 9/19/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/rete/client/main.hpp"
+#ifndef XOS_APP_CONSOLE_RETE_BASE_MAIN_HPP
+#define XOS_APP_CONSOLE_RETE_BASE_MAIN_HPP
 
-//#define XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE
-#if defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
-//#include "xos/console/main_main.cpp"
-#endif /// defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+#include "xos/app/console/rete/base/main_opt.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
 namespace rete {
-namespace client {
+namespace base {
 
-///  Class: maint
-#if defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
-static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+/// class maint
+template <class TExtends = main_opt, class TImplements = typename TExtends::implements>
+class exported maint: virtual public TImplements, public TExtends {
+public:
+    typedef TImplements implements;
+    typedef TExtends extends;
+    typedef maint derives; 
+    
+    /// constructors / destructor
+    maint() {
+    }
+    virtual ~maint() {
+    }
+private:
+    maint(const maint& copy): extends(copy) {
+    }
+}; /// class maint
+typedef maint<> main;
 
-
-} /// namespace client
+} /// namespace base
 } /// namespace rete
 } /// namespace console
 } /// namespace app
 } /// namespace xos
+
+#endif /// XOS_APP_CONSOLE_RETE_BASE_MAIN_HPP

@@ -16,28 +16,28 @@
 ///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 9/9/2020
+///   Date: 9/19/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/rete/client/main.hpp"
+#include "xos/app/console/rete/base/main.hpp"
 
-//#define XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE
-#if defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+//#define XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE
+#if defined(XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE)
 //#include "xos/console/main_main.cpp"
-#endif /// defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+#endif /// defined(XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
 namespace rete {
-namespace client {
+namespace base {
 
 ///  Class: maint
-#if defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+#if defined(XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE)
 static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE)
+#endif /// defined(XOS_APP_CONSOLE_RETE_BASE_MAIN_INSTANCE)
 
 
-} /// namespace client
+} /// namespace base
 } /// namespace rete
 } /// namespace console
 } /// namespace app

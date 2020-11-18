@@ -33,7 +33,7 @@
 #define XOS_NETWORK_MAIN_INFO_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
 #define XOS_NETWORK_MAIN_INFO_OPTARG_RESULT 0
 #define XOS_NETWORK_MAIN_INFO_OPTARG ""
-#define XOS_NETWORK_MAIN_INFO_OPTUSE "Info"
+#define XOS_NETWORK_MAIN_INFO_OPTUSE "Address info"
 #define XOS_NETWORK_MAIN_INFO_OPTVAL_S "i"
 #define XOS_NETWORK_MAIN_INFO_OPTVAL_C 'i'
 #define XOS_NETWORK_MAIN_INFO_OPTION \
@@ -277,22 +277,25 @@ protected:
 
     /// ...accept_host / ...accept_port
     virtual string_t& set_accept_host(const string_t& to) {
+        string_t& accept_host = this->accept_host();
         const char_t* chars = to.has_chars();
-        if ((chars)) accept_host_.assign(to);
-        else accept_host_.clear();
-        return accept_host();
+        if ((chars)) accept_host.assign(to);
+        else accept_host.clear();
+        return accept_host;
     }
     virtual string_t& set_accept_host(const char_t* to) {
-        if ((to)) accept_host_.assign(to);
-        else accept_host_.clear();
-        return accept_host();
+        string_t& accept_host = this->accept_host();
+        if ((to)) accept_host.assign(to);
+        else accept_host.clear();
+        return accept_host;
     }
     virtual string_t& accept_host() const {
         return (string_t&)accept_host_;
     }
     virtual short& set_accept_port(short to) {
-        accept_port_ = to;
-        return accept_port();
+        short& accept_port = this->accept_port();
+        accept_port = to;
+        return accept_port;
     }
     virtual short& accept_port() const {
         return (short&)accept_port_;
@@ -300,22 +303,25 @@ protected:
 
     /// ...connect_host / ...connect_port
     virtual string_t& set_connect_host(const string_t& to) {
+        string_t& connect_host = this->connect_host();
         const char_t* chars = to.has_chars();
-        if ((chars)) connect_host_.assign(to);
-        else connect_host_.clear();
-        return connect_host();
+        if ((chars)) connect_host.assign(to);
+        else connect_host.clear();
+        return connect_host;
     }
     virtual string_t& set_connect_host(const char_t* to) {
-        if ((to)) connect_host_.assign(to);
-        else connect_host_.clear();
-        return connect_host();
+        string_t& connect_host = this->connect_host();
+        if ((to)) connect_host.assign(to);
+        else connect_host.clear();
+        return connect_host;
     }
     virtual string_t& connect_host() const {
         return (string_t&)connect_host_;
     }
     virtual short& set_connect_port(short to) {
-        connect_port_ = to;
-        return connect_port();
+        short& connect_port = this->connect_port();
+        connect_port = to;
+        return connect_port;
     }
     virtual short& connect_port() const {
         return (short&)connect_port_;

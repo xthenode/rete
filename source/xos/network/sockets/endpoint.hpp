@@ -172,6 +172,124 @@ public:
     virtual int last_error() const {
         return errno;
     }
+
+#if defined(WINSOCK_1)
+    /// ...addrinfo / ...nameinfo
+    virtual int getaddrinfo
+    (const char *hostname, const char *servname, 
+     const struct addrinfo *hints, struct addrinfo **res) const {
+        int err = EINVAL;
+
+        if ((hostname) && (hostname[0]) && (res)) {
+            struct hostent *hostent = 0;
+
+            LOGGER_IS_LOGGED_DEBUG("this->gethostbyname(\"" << hostname << "\")...");
+            if ((hostent = this->gethostbyname(hostname))) {
+                int addrtype = hostent->h_addrtype;
+                int addrlen = hostent->h_length;
+                bool addrtype_in = (AF_INET == addrtype);
+                char **addr_list = 0, *addr = 0;
+                struct addrinfo *addrinfo = 0;
+
+                LOGGER_IS_LOGGED_DEBUG("...this->gethostbyname(\"" << hostname << "\") " << "hostent->h_name = \"" << hostent->h_name << "\" hostent->h_addrtype = " << int_to_string(hostent->h_addrtype) << " hostent->h_length = " << int_to_string(hostent->h_length));
+                if ((addrinfo = new struct addrinfo)) {
+                    memset(addrinfo, 0, sizeof(struct addrinfo));
+                    *res = addrinfo;
+                    err = 0;
+                }
+                if ((addrtype_in) && (addr_list = hostent->h_addr_list) && (addr = addr_list[0])) {
+                    int sockaddrlen = sizeof(struct sockaddr_in);
+                    struct sockaddr_in *sockaddr = 0;
+
+                    if ((sockaddr = new struct sockaddr_in)) {
+                        memset(sockaddr, 0, sockaddrlen);
+                        sockaddr->sin_family = addrtype;
+                        memcpy(&sockaddr->sin_addr, addr, addrlen);
+                        addrinfo->ai_family = addrtype;
+                        addrinfo->ai_addrlen = sockaddrlen;
+                        addrinfo->ai_addr = (struct sockaddr*)sockaddr;
+                    }
+                }
+            } else {
+                LOGGER_IS_LOGGED_ERROR("...failed 0 = this->gethostbyname(\"" << hostname << "\")");
+            }
+        }
+        return err;
+    }
+    virtual void freeaddrinfo(struct addrinfo *ai) const {
+        if (ai) {
+            LOGGER_IS_LOGGED_DEBUG("delete ai = " << pointer_to_string(ai) << "...");
+            delete ai;
+            LOGGER_IS_LOGGED_DEBUG("...delete ai = " << pointer_to_string(ai) << "");
+        }
+    }
+    virtual int getnameinfo
+    (const struct sockaddr *sa, socklen_t salen, char *host,
+     socklen_t hostlen, char *serv, socklen_t servlen, int flags) const {
+        int err = EINVAL;
+
+        if ((sa) && (sizeof(struct sockaddr) <= salen) && (host) && (1 <= hostlen)) {
+            int addrtype = sa->sa_family;
+
+            if ((AF_INET == (addrtype))) {
+                const struct sockaddr_in *sin = ((const struct sockaddr_in *)sa);
+                const in_addr *addr = &sin->sin_addr;
+                socklen_t addrlen = sizeof(sin->sin_addr); 
+                struct hostent *hostent = 0;
+                const char* hostname = 0;
+                
+                LOGGER_IS_LOGGED_DEBUG("this->gethostbyaddr(addr = " << const_pointer_to_string(addr) << ", addrlen = " << int_to_string(addrlen) << ", addrtype = " << int_to_string(addrtype) << ")...");
+                if ((hostent = this->gethostbyaddr(addr, addrlen, addrtype))) {
+                    LOGGER_IS_LOGGED_DEBUG("...this->gethostbyaddr(addr = " << const_pointer_to_string(addr) << ", addrlen = " << int_to_string(addrlen) << ", addrtype = " << int_to_string(addrtype) << ")");
+                    memset(host, 0, hostlen);
+                    if ((hostname = hostent->h_name) && (1 < hostlen)) {
+                        strncpy(host, hostname, hostlen - 1);
+                        err = 0;
+                    }
+                } else {
+                    LOGGER_IS_LOGGED_ERROR("...failed 0 = this->gethostbyaddr(addr = " << const_pointer_to_string(addr) << ", addrlen = " << int_to_string(addrlen) << ", addrtype = " << int_to_string(addrtype) << ")");
+                }
+            }
+        }
+        return err;
+    }
+#else /// defined(WINSOCK_1)
+#endif /// defined(WINSOCK_1)
+
+#if defined(WINSOCK_1)
+    /// ...hostbyname / ...hostbyaddr
+    virtual struct hostent *gethostbyname(const char *hostname) const {
+        struct hostent *hostent = 0;
+
+        if ((hostname) && (hostname[0])) {
+
+            LOGGER_IS_LOGGED_DEBUG("::gethostbyname(\"" << hostname << "\")...");
+            if ((hostent = ::gethostbyname(hostname))) {
+                LOGGER_IS_LOGGED_DEBUG("...::gethostbyname(\"" << hostname << "\")");
+            } else {
+                LOGGER_IS_LOGGED_ERROR("...failed 0 = ::gethostbyname(\"" << hostname << "\")");
+            }
+        }
+        return hostent;
+    }
+    virtual struct hostent *gethostbyaddr(const void *addr, socklen_t len, int type) const {
+        struct hostent *hostent = 0;
+        const char *caddr = 0;
+        
+        if ((caddr = ((const char *)addr)) && (0 < len)) {
+            
+            LOGGER_IS_LOGGED_DEBUG("::gethostbyaddr(addr = " << const_pointer_to_string(caddr) << ", len = " << int_to_string(len) << ", type = " << int_to_string(type) << ")...");
+            if ((hostent = ::gethostbyaddr(caddr, len, type))) {
+                LOGGER_IS_LOGGED_DEBUG("...::gethostbyaddr(addr = " << const_pointer_to_string(caddr) << ", len = " << int_to_string(len) << ", type = " << int_to_string(type) << ")");
+            } else {
+                LOGGER_IS_LOGGED_DEBUG("...failed 0 = ::gethostbyaddr(addr = " << const_pointer_to_string(caddr) << ", len = " << int_to_string(len) << ", type = " << int_to_string(type) << ")");
+            }
+        } 
+        return hostent;
+    }
+#else /// defined(WINSOCK_1)
+#endif /// defined(WINSOCK_1)
+
 }; /// class endpointt
 typedef endpointt<> endpoint;
 

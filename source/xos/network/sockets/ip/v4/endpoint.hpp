@@ -129,9 +129,10 @@ public:
     }
     virtual attached_t attach(sockport_t port) {
         memset(&socket_address_, 0, this->socket_address_len_ = (this->socket_address_len()));
-#if defined(BSD)
+#if !defined(WINSOCK_1)
         socket_address_.sin_len = this->socket_address_len_;
-#endif /// defined(BSD)
+#else /// !defined(WINSOCK_1)
+#endif /// !defined(WINSOCK_1)
         socket_address_.sin_family = this->family();
         socket_address_.sin_addr.s_addr = INADDR_ANY;
         socket_address_.sin_port = htons(this->socket_address_port_ = port);

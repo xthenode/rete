@@ -43,7 +43,7 @@ typedef struct sockaddr sockaddr_t;
 typedef ::socklen_t socklen_t;
 
 /// sockport_t
-typedef u_short sockport_t;
+typedef unsigned short sockport_t;
 
 /// sockstring_t
 typedef string sockstring_t;

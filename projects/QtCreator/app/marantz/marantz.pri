@@ -13,78 +13,74 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: retec.pri
+#   File: marantz.pri
 #
 # Author: $author$
-#   Date: 9/9/2020
+#   Date: 11/16/2020
 #
-# QtCreator .pri file for rete executable retec
+# QtCreator .pri file for rete executable marantz
 ########################################################################
 
 ########################################################################
-# retec
+# marantz
 
-# retec TARGET
+# marantz TARGET
 #
-retec_TARGET = retec
+marantz_TARGET = marantz
 
-# retec INCLUDEPATH
+# marantz INCLUDEPATH
 #
-retec_INCLUDEPATH += \
+marantz_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# retec DEFINES
+# marantz DEFINES
 #
-retec_DEFINES += \
+marantz_DEFINES += \
 $${rete_DEFINES} \
 LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
-XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE \
+XOS_APP_CONSOLE_MARANTZ_CLIENT_MAIN_INSTANCE \
 
 ########################################################################
-# retec OBJECTIVE_HEADERS
+# marantz OBJECTIVE_HEADERS
 #
-#retec_OBJECTIVE_HEADERS += \
+#marantz_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# retec OBJECTIVE_SOURCES
+# marantz OBJECTIVE_SOURCES
 #
-#retec_OBJECTIVE_SOURCES += \
+#marantz_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# retec HEADERS
+# marantz HEADERS
 #
-retec_HEADERS += \
-$${RETE_SRC}/xos/network/sockets/endpoint.hpp \
+marantz_HEADERS += \
+$${NADIR_SRC}/xos/base/string.hpp \
 \
-$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/base/main.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.hpp \
+$${RETE_SRC}/xos/app/console/marantz/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/marantz/client/main.hpp \
 \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
-# retec SOURCES
+# marantz SOURCES
 #
-retec_SOURCES += \
-$${RETE_SRC}/xos/network/sockets/endpoint.cpp \
+marantz_SOURCES += \
+$${NADIR_SRC}/xos/base/string.cpp \
 \
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.cpp \
+$${RETE_SRC}/xos/app/console/marantz/client/main_opt.cpp \
+$${RETE_SRC}/xos/app/console/marantz/client/main.cpp \
 \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################
-# retec FRAMEWORKS
+# marantz FRAMEWORKS
 #
-retec_FRAMEWORKS += \
+marantz_FRAMEWORKS += \
 $${rete_FRAMEWORKS} \
 
-# retec LIBS
+# marantz LIBS
 #
-retec_LIBS += \
+marantz_LIBS += \
 $${rete_LIBS} \
 
 

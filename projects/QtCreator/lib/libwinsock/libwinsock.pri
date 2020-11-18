@@ -13,78 +13,60 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: retec.pri
+#   File: libwinsock.pri
 #
 # Author: $author$
-#   Date: 9/9/2020
+#   Date: 11/16/2020
 #
-# QtCreator .pri file for rete executable retec
+# QtCreator .pri file for rete library libwinsock
 ########################################################################
 
 ########################################################################
-# retec
+# libwinsock
 
-# retec TARGET
+# libwinsock TARGET
 #
-retec_TARGET = retec
+libwinsock_TARGET = winsock
+libwinsock_TEMPLATE = lib
+libwinsock_CONFIG += staticlib
 
-# retec INCLUDEPATH
+# libwinsock INCLUDEPATH
 #
-retec_INCLUDEPATH += \
+libwinsock_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# retec DEFINES
+# libwinsock DEFINES
 #
-retec_DEFINES += \
+libwinsock_DEFINES += \
 $${rete_DEFINES} \
-LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
-XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE \
 
 ########################################################################
-# retec OBJECTIVE_HEADERS
+# libwinsock OBJECTIVE_HEADERS
 #
-#retec_OBJECTIVE_HEADERS += \
+#libwinsock_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# retec OBJECTIVE_SOURCES
+# libwinsock OBJECTIVE_SOURCES
 #
-#retec_OBJECTIVE_SOURCES += \
+#libwinsock_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# retec HEADERS
+# libwinsock HEADERS
 #
-retec_HEADERS += \
-$${RETE_SRC}/xos/network/sockets/endpoint.hpp \
-\
-$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/base/main.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.hpp \
-\
-$${NADIR_SRC}/xos/console/main_main.hpp \
+libwinsock_HEADERS += \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock.h \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock.hpp \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock2.h \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock2.hpp \
 
-# retec SOURCES
+# libwinsock SOURCES
 #
-retec_SOURCES += \
-$${RETE_SRC}/xos/network/sockets/endpoint.cpp \
-\
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.cpp \
-\
-$${NADIR_SRC}/xos/console/main_main.cpp \
+libwinsock_SOURCES += \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock.cpp \
+$${RETE_SRC}/xos/platform/bsd/microsoft/windows/sockets/winsock2.cpp \
 
 ########################################################################
-# retec FRAMEWORKS
-#
-retec_FRAMEWORKS += \
-$${rete_FRAMEWORKS} \
 
-# retec LIBS
-#
-retec_LIBS += \
-$${rete_LIBS} \
 
 

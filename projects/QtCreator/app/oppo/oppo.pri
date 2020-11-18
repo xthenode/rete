@@ -13,78 +13,70 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: retec.pri
+#   File: oppo.pri
 #
 # Author: $author$
-#   Date: 9/9/2020
+#   Date: 11/17/2020
 #
-# QtCreator .pri file for rete executable retec
+# QtCreator .pri file for rete executable oppo
 ########################################################################
 
 ########################################################################
-# retec
+# oppo
 
-# retec TARGET
+# oppo TARGET
 #
-retec_TARGET = retec
+oppo_TARGET = oppo
 
-# retec INCLUDEPATH
+# oppo INCLUDEPATH
 #
-retec_INCLUDEPATH += \
+oppo_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# retec DEFINES
+# oppo DEFINES
 #
-retec_DEFINES += \
+oppo_DEFINES += \
 $${rete_DEFINES} \
 LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
-XOS_APP_CONSOLE_RETE_CLIENT_MAIN_INSTANCE \
+XOS_APP_CONSOLE_OPPO_CLIENT_MAIN_INSTANCE \
 
 ########################################################################
-# retec OBJECTIVE_HEADERS
+# oppo OBJECTIVE_HEADERS
 #
-#retec_OBJECTIVE_HEADERS += \
+#oppo_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# retec OBJECTIVE_SOURCES
+# oppo OBJECTIVE_SOURCES
 #
-#retec_OBJECTIVE_SOURCES += \
+#oppo_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# retec HEADERS
+# oppo HEADERS
 #
-retec_HEADERS += \
-$${RETE_SRC}/xos/network/sockets/endpoint.hpp \
-\
-$${RETE_SRC}/xos/app/console/network/base/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/base/main.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/client/main.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.hpp \
+oppo_HEADERS += \
+$${RETE_SRC}/xos/app/console/oppo/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/oppo/client/main.hpp \
 \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
-# retec SOURCES
+# oppo SOURCES
 #
-retec_SOURCES += \
-$${RETE_SRC}/xos/network/sockets/endpoint.cpp \
-\
-$${RETE_SRC}/xos/app/console/rete/client/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/rete/client/main.cpp \
+oppo_SOURCES += \
+$${RETE_SRC}/xos/app/console/oppo/client/main_opt.cpp \
+$${RETE_SRC}/xos/app/console/oppo/client/main.cpp \
 \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################
-# retec FRAMEWORKS
+# oppo FRAMEWORKS
 #
-retec_FRAMEWORKS += \
+oppo_FRAMEWORKS += \
 $${rete_FRAMEWORKS} \
 
-# retec LIBS
+# oppo LIBS
 #
-retec_LIBS += \
+oppo_LIBS += \
 $${rete_LIBS} \
 
 

@@ -147,3 +147,7 @@ $${build_rete_DEFINES} \
 rete_LIBS += \
 -L$${RETE_LIB}/lib$${RETE_NAME} \
 -l$${RETE_NAME} \
+
+rete_winsock_LIBS += \
+-L$${RETE_LIB}/libwinsock \
+-lwinsock \

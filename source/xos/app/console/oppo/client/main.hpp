@@ -121,6 +121,17 @@ protected:
         recv_response_ = 0;
         return err;
     }
+    virtual int on_track_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("QTK");
+        send_request_ = &derives::send_crlf_request;
+        recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
     virtual int on_start_option
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
@@ -183,6 +194,54 @@ protected:
         return err;
     }
 
+    virtual int on_replay_all_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("SRP ");
+        if ((optarg) && (optarg[0])) {
+            connect_request.append(optarg);
+        } else {
+            connect_request.append("ALL");
+        }
+        send_request_ = &derives::send_crlf_request;
+        recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
+    virtual int on_replay_random_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("SRP ");
+        if ((optarg) && (optarg[0])) {
+            connect_request.append(optarg);
+        } else {
+            connect_request.append("RND");
+        }
+        send_request_ = &derives::send_crlf_request;
+        recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
+    virtual int on_replay_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("QRP");
+        if ((optarg) && (optarg[0])) {
+            connect_request.assign("SRP ");
+            connect_request.append(optarg);
+        }
+        send_request_ = &derives::send_crlf_request;
+        recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
+
     virtual int on_bray_option
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
@@ -201,6 +260,23 @@ protected:
         int err = 0;
         this->set_connect_run(argc, argv, env);
         connect_request.assign("SIS 1");
+        send_request_ = &derives::send_crlf_request;
+        recv_response_ = 0;
+        return err;
+    }
+
+    virtual int on_eject_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("EJT");
+        if ((optarg) && (optarg[0])) {
+            connect_request.append(" ");
+            connect_request.append(optarg);
+        } else {
+        }
         send_request_ = &derives::send_crlf_request;
         recv_response_ = 0;
         return err;
@@ -237,6 +313,19 @@ protected:
         connect_request.assign("POW");
         send_request_ = &derives::send_crlf_request;
         recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
+
+    virtual int on_argument
+    (const char_t* arg, int argind, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if ((arg) && (arg[0])) {
+            string_t& connect_request = this->connect_request();
+            this->set_connect_run(argc, argv, env);
+            connect_request.assign(arg);
+            send_request_ = &derives::send_crlf_request;
+            recv_response_ = &derives::recv_cr_response;
+        }
         return err;
     }
 

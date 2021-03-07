@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -16,22 +16,21 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020, 3/6/2021
+///   Date: 3/3/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_KASA_MAIN_HPP
+#define XOS_APP_CONSOLE_KASA_MAIN_HPP
 
-#include "xos/app/console/network/sockets/main_opt.hpp"
+#include "xos/app/console/kasa/main_opt.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace sockets {
+namespace kasa {
 
 /// class maint
 template 
-<class TExtends = main_opt, 
+<class TExtends = kasa::main_opt, 
  class TImplements = typename TExtends::implements>
 
 class exported maint: virtual public TImplements, public TExtends {
@@ -62,14 +61,12 @@ protected:
     typedef typename extends::in_reader_t in_reader_t;
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
-
 }; /// class maint
 typedef maint<> main;
 
-} /// namespace sockets
-} /// namespace network
+} /// namespace kasa
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_KASA_MAIN_HPP

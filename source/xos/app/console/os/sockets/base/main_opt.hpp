@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,32 +13,34 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020, 3/6/2021
+///   Date: 3/4/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_OPT_HPP
 
-#include "xos/app/console/network/sockets/main_opt.hpp"
+#include "xos/app/console/network/sockets/base/main.hpp"
+#include "xos/network/sockets/os/interface.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
+namespace os {
 namespace sockets {
+namespace base {
 
-/// class maint
+/// class main_optt
 template 
-<class TExtends = main_opt, 
+<class TExtends = network::sockets::base::main, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
     typedef typename extends::reader_t reader_t;
     typedef typename extends::writer_t writer_t;
@@ -49,27 +51,26 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint() {
+    main_optt() {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy) {
-        throw exception(exception_unexpected);
+    main_optt(const main_optt& copy) {
     }
 
 protected:
     typedef typename extends::in_reader_t in_reader_t;
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
-}; /// class maint
-typedef maint<> main;
-
+} /// namespace base
 } /// namespace sockets
-} /// namespace network
+} /// namespace os
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_OPT_HPP

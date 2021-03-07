@@ -16,7 +16,7 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020
+///   Date: 11/7/2020, 3/5/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_HPP
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_HPP
@@ -46,7 +46,7 @@ namespace sockets {
 namespace base {
 
 /// class maint
-template <class TExtends = main_optt<>, class TImplements = typename TExtends::implements>
+template <class TExtends = base::main_optt<>, class TImplements = typename TExtends::implements>
 class exported maint: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
@@ -130,10 +130,16 @@ protected:
         int err = 0;
 
         if ((ep.attach(host, port))) {
-            char host[1024];
+            size_t sizeof_host_name = 0;
+            char* host_name = 0; 
 
-            if ((ep.host_name(host, sizeof(host)))) {
-                this->outlln("host = \"", host, "\"", null);
+            if ((host_name = this->host_name(sizeof_host_name))) {
+
+                if ((ep.host_name(host_name, sizeof_host_name-1))) {
+
+                    host_name[sizeof_host_name-1] = 0;
+                    this->outlln("host = \"", host_name, "\"", null);
+                }
             }
             ep.detach();
         }
@@ -265,14 +271,308 @@ protected:
         return err;
     }
 
-    /// recv_crlf2
+    /// ...send_request
+    virtual int send_request(xos::network::sockets::interface& cn, string_t& request, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+
+        if ((chars = request.has_chars(length))) {
+            cn.send(chars, length);
+        }
+        return err;
+    }
+    virtual int before_send_request(xos::network::sockets::interface& cn, string_t& request, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_request(xos::network::sockets::interface& cn, string_t& request, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_request(xos::network::sockets::interface& cn, string_t& request, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_send_request(cn, request, argc, argv, env))) {
+            int err2 = 0;
+            err = send_request(cn, request, argc, argv, env);
+            if ((err2 = after_send_request(cn, request, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_request
+    virtual int recv_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        char_t c = 0;
+
+        if (!(err = this->recv_crlf2(request, c, cn, argc, argv, env))) {
+            err = all_process_request(request, cn, argc, argv, env);
+        }
+        return err;
+    }
+    virtual int before_recv_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_recv_request(request, cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_request(request, cn, argc, argv, env);
+            if ((err2 = after_recv_request(request, cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...send_response
+    virtual int send_response(xos::network::sockets::interface& cn, string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+
+        if ((chars = response.has_chars(length))) {
+            cn.send(chars, length);
+        }
+        return err;
+    }
+    virtual int before_send_response(xos::network::sockets::interface& cn, string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_send_response(xos::network::sockets::interface& cn, string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_send_response(xos::network::sockets::interface& cn, string_t& response, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_send_response(cn, response, argc, argv, env))) {
+            int err2 = 0;
+            err = send_response(cn, response, argc, argv, env);
+            if ((err2 = after_send_response(cn, response, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_response
+    virtual int recv_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        char_t c = 0;
+
+        if (!(err = this->recv_crlf2(response, c, cn, argc, argv, env))) {
+            err = all_process_response(response, cn, argc, argv, env);
+        }
+        return err;
+    }
+    virtual int before_recv_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_recv_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_recv_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_recv_response(response, cn, argc, argv, env))) {
+            int err2 = 0;
+            err = recv_response(response, cn, argc, argv, env);
+            if ((err2 = after_recv_response(response, cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...process_request
+    virtual int process_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+
+        if ((chars = request.has_chars(length))) {
+            this->out(chars, length);
+        }
+        return err;
+    }
+    virtual int before_process_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_process_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_process_request(string_t& request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_process_request(request, cn, argc, argv, env))) {
+            int err2 = 0;
+            err = process_request(request, cn, argc, argv, env);
+            if ((err2 = after_process_request(request, cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...process_response
+    virtual int process_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+
+        if ((chars = response.has_chars(length))) {
+            this->out(chars, length);
+        }
+        return err;
+    }
+    virtual int before_process_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_process_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_process_response(string_t& response, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_process_response(response, cn, argc, argv, env))) {
+            int err2 = 0;
+            err = process_response(response, cn, argc, argv, env);
+            if ((err2 = after_process_response(response, cn, argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// send_lf...
+    /// ...<lf>
+    virtual int send_lf(xos::network::sockets::interface& cn, const string_t& s, int argc, char_t** argv, char_t**env) {
+        string_t lf_s(s);
+        int err = 0;
+        size_t length = 0;
+        const char_t *chars = 0;
+
+        lf_s.appendlf();
+        if ((chars = lf_s.has_chars(length))) {
+            cn.send(chars, length);
+        }
+        return err;
+    }
+
+    /// send_cr...
+    /// ...<cr>
+    virtual int send_cr(xos::network::sockets::interface& cn, const string_t& s, int argc, char_t** argv, char_t**env) {
+        string_t cr_s(s);
+        int err = 0;
+        size_t length = 0;
+        const char_t *chars = 0;
+
+        cr_s.appendcr();
+        if ((chars = cr_s.has_chars(length))) {
+            cn.send(chars, length);
+        }
+        return err;
+    }
+    /// ...<cr><lf>
+    virtual int send_crlf(xos::network::sockets::interface& cn, const string_t& s, int argc, char_t** argv, char_t**env) {
+        string_t cr_s(s);
+        int err = 0;
+        size_t length = 0;
+        const char_t *chars = 0;
+
+        cr_s.appendcr();
+        cr_s.appendlf();
+        if ((chars = cr_s.has_chars(length))) {
+            cn.send(chars, length);
+        }
+        return err;
+    }
+
+    /// recv_lf...
+    /// ...<lf>
+    virtual int recv_lf(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        while (0 < (amount = cn.recv(&c, 1))) {
+            r.append(&c, 1);
+            switch (c) {
+            case '\n':
+                return err = 0;
+            }
+        }
+        return err;
+    }
+
+    /// recv_cr...
+    /// ...<cr>
+    virtual int recv_cr(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        while (0 < (amount = cn.recv(&c, 1))) {
+            r.append(&c, 1);
+            switch (c) {
+            case '\r':
+                return err = 0;
+            }
+        }
+        return err;
+    }
+    /// ...<cr><lf>
+    virtual int recv_crlf(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        enum { ch, cr } s = ch;
+        while (0 < (amount = cn.recv(&c, 1))) {
+            r.append(&c, 1);
+            switch (c) {
+            case '\r':
+                switch (s) {
+                case ch:
+                case cr:
+                    s = cr;
+                    break;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
+                }
+                break;
+            case '\n':
+                switch (s) {
+                case ch:
+                    s = ch;
+                    break;
+                case cr:
+                    return err = 0;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
+                }
+                break;
+            default:
+                s = ch;
+                break;
+            }
+        }
+        return err;
+    }
     /// ...<cr><lf><cr><lf>
     virtual int recv_crlf2(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
         ssize_t amount = 0;
         enum { ch, cr, lf, lfcr } s = ch;
 
-        while (0 < (amount = cn.recv(&c, 1, 0))) {
+        while (0 < (amount = cn.recv(&c, 1))) {
             r.append(&c, 1);
             switch (c) {
             case '\r':
@@ -285,6 +585,7 @@ protected:
                     s = lfcr;
                     break;
                 case lfcr:
+                    s = cr;
                     break;
                 default:
                     LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
@@ -314,39 +615,75 @@ protected:
         }
         return err;
     }
-
-    /// ...info
-    virtual int info(int argc, char_t** argv, char_t**env) {
-        const xos::network::sockets::sockstring_t& host = this->host();
-        const xos::network::sockets::sockport_t& port = this->port();
-        xos::network::sockets::endpoint& ep = this->ep();
+    /// <d>[1..n]...[1..n] | <cr><lf><cr><lf>
+    virtual int recv_sizeof_sized_crlf2(size_t size_of, string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
+        ssize_t amount = 0;
+        size_t size = 0;
 
-        if ((ep.attach(host, port))) {
-            char host[1024];
-
-            if ((ep.host_name(host, sizeof(host)))) {
-                this->outlln("host = \"", host, "\"", null);
+        for (size_t remain = size_of; remain; --remain) {
+            if  (1 > (amount = cn.recv(&c, 1))) {
+                return err;
             }
-            ep.detach();
+            r.append(&c, 1);
+            size = (size << 8) | ((uint8_t)c);
         }
+        err = recv_sized_crlf2(size, r, c, cn, argc, argv, env);
         return err;
     }
-    virtual int before_info(int argc, char_t** argv, char** env) {
+    /// ...[1..n] | <cr><lf><cr><lf>
+    virtual int recv_sized_crlf2(size_t size, string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
-        return err;
-    }
-    virtual int after_info(int argc, char_t** argv, char** env) {
-        int err = 0;
-        return err;
-    }
-    virtual int all_info(int argc, char_t** argv, char** env) {
-        int err = 0;
-        if (!(err = before_info(argc, argv, env))) {
-            int err2 = 0;
-            err = info(argc, argv, env);
-            if ((err2 = after_info(argc, argv, env))) {
-                if (!(err)) err = err2;
+        ssize_t amount = 0;
+        enum { ch, cr, lf, lfcr } s = ch;
+        for (; size; --size) {
+            if (1 > (amount = cn.recv(&c, 1))) {
+                break;
+            } else {
+                r.append(&c, 1);
+                switch (c) {
+                case '\r':
+                    switch (s) {
+                    case ch:
+                        s = cr;
+                        break;
+                    case cr:
+                        s = cr;
+                        break;
+                    case lf:
+                        s = lfcr;
+                        break;
+                    case lfcr:
+                        s = cr;
+                        break;
+                    default:
+                        LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                        return err = 1;
+                    }
+                    break;
+                case '\n':
+                    switch (s) {
+                    case ch:
+                        s = ch;
+                        break;
+                    case cr:
+                        s = lf;
+                        break;
+                    case lf:
+                        s = ch;
+                        break;
+                    case lfcr:
+                        return err = 0;
+                        break;
+                    default:
+                        LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                        return err = 1;
+                    }
+                    break;
+                default:
+                    s = ch;
+                    break;
+                }
             }
         }
         return err;
@@ -414,6 +751,12 @@ protected:
     }
     virtual short& connect_port() const {
         return (short&)connect_port_;
+    }
+
+    /// host_name
+    virtual char* host_name(size_t& size) const {
+        size = sizeof(host_name_);
+        return (char*)host_name_;
     }
 
     /// ...iface
@@ -495,6 +838,7 @@ protected:
 protected:
     string_t accept_host_, connect_host_;
     short accept_port_, connect_port_;
+    char host_name_[1024];
 
     xos::network::sockets::interface accept_iface_, connect_iface_;
 

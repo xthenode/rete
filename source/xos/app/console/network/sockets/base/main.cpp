@@ -33,7 +33,7 @@ namespace base {
 
 ///  Class: maint
 #if defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_INSTANCE)
-//static main the_main;
+static main the_main;
 #endif /// defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_INSTANCE)
 
 } /// namespace base

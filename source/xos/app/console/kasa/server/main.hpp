@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -16,22 +16,22 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020, 3/6/2021
+///   Date: 3/3/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_KASA_SERVER_MAIN_HPP
+#define XOS_APP_CONSOLE_KASA_SERVER_MAIN_HPP
 
-#include "xos/app/console/network/sockets/main_opt.hpp"
+#include "xos/app/console/kasa/server/main_opt.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace sockets {
+namespace kasa {
+namespace server {
 
 /// class maint
 template 
-<class TExtends = main_opt, 
+<class TExtends = kasa::server::main_opt, 
  class TImplements = typename TExtends::implements>
 
 class exported maint: virtual public TImplements, public TExtends {
@@ -63,13 +63,58 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
 
+    /// ...process_request
+    virtual int before_process_request
+    (string_t& accept_request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+
+        if ((chars = accept_request.has_chars(length))) {
+            string_t& decrypt_text = this->decrypt_text(accept_request);
+
+            if ((chars = decrypt_text.has_chars(length))) {
+                accept_request.assign(chars, length);
+                accept_request.appendln();
+            }
+        }
+        return err;
+    }
+
+    /// ...recv_request
+    virtual int recv_request
+    (string_t& accept_request, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        char_t c = 0;
+
+        if (!(err = this->recv_sizeof_sized_crlf2(4, accept_request, c, cn, argc, argv, env))) {
+            err = this->all_process_request(accept_request, cn, argc, argv, env);
+        }
+        return err;
+    }
+
+    /// ...send_response
+    virtual int before_send_response
+    (xos::network::sockets::interface& cn, string_t& accept_response, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        size_t length = 0;
+        const char_t* chars = 0;
+        string_t &plain_text = this->plain_text(), 
+                 &encrypt_text = this->encrypt_text(plain_text);
+        
+        if ((chars = encrypt_text.has_chars(length))) {
+            accept_response.assign(chars, length);
+        }
+        return err;
+    }
+
 }; /// class maint
 typedef maint<> main;
 
-} /// namespace sockets
-} /// namespace network
+} /// namespace server
+} /// namespace kasa
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_KASA_SERVER_MAIN_HPP

@@ -106,6 +106,20 @@ protected:
         return err;
     }
 
+    /// ...host_run
+    virtual int host_run(int argc, char_t** argv, char_t** env) {
+        const xos::network::sockets::sockstring_t& host = this->host();
+        int err = 0;
+        this->outln(host.chars());
+        return err;
+    }
+    virtual int port_run(int argc, char_t** argv, char_t** env) {
+        const short& port = this->port();
+        int err = 0;
+        this->outln(unsigned_to_string(port).chars());
+        return err;
+    }
+
     /// ...send_request
     virtual int send_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
@@ -232,6 +246,20 @@ protected:
         return err;
     }
 
+    /// recv_lf...
+    virtual int recv_lf(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        while (0 < (amount = cn.recv(&c, 1, 0))) {
+            r.append(&c, 1);
+            switch (c) {
+            case '\n':
+                return err = 0;
+            }
+        }
+        return err;
+    }
+
     /// recv_cr...
     virtual int recv_cr(string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
@@ -240,7 +268,7 @@ protected:
             r.append(&c, 1);
             switch (c) {
             case '\r':
-                return err;
+                return err = 0;
             }
         }
         return err;
@@ -257,15 +285,24 @@ protected:
                 case ch:
                     s = cr;
                     break;
+                case cr:
+                    s = cr;
+                    break;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
                 }
                 break;
             case '\n':
                 switch (s) {
                 case cr:
-                    return err;
-                default:
+                    return err = 0;
+                case ch:
                     s = ch;
                     break;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
                 }
                 break;
             default:
@@ -294,7 +331,11 @@ protected:
                     s = lfcr;
                     break;
                 case lfcr:
+                    s = cr;
                     break;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
                 }
                 break;
             case '\n':
@@ -309,8 +350,11 @@ protected:
                     s = ch;
                     break;
                 case lfcr:
-                    return err;
+                    return err = 0;
                     break;
+                default:
+                    LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                    return err = 1;
                 }
                 break;
             default:
@@ -320,7 +364,78 @@ protected:
         }
         return err;
     }
+    virtual int recv_sizeof_sized_crlf2(size_t size_of, string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        size_t size = 0;
 
+        for (size_t remain = size_of; remain; --remain) {
+            if  (1 > (amount = cn.recv(&c, 1, 0))) {
+                return err;
+            }
+            r.append(&c, 1);
+            size = (size << 8) | ((uint8_t)c);
+        }
+        err = recv_sized_crlf2(size, r, c, cn, argc, argv, env);
+        return err;
+    }
+    virtual int recv_sized_crlf2(size_t size, string_t& r, char_t& c, xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
+        int err = 0;
+        ssize_t amount = 0;
+        enum { ch, cr, lf, lfcr } s = ch;
+        for (; size; --size) {
+            if (1 > (amount = cn.recv(&c, 1, 0))) {
+                break;
+            } else {
+                r.append(&c, 1);
+                switch (c) {
+                case '\r':
+                    switch (s) {
+                    case ch:
+                        s = cr;
+                        break;
+                    case cr:
+                        s = cr;
+                        break;
+                    case lf:
+                        s = lfcr;
+                        break;
+                    case lfcr:
+                        s = cr;
+                        break;
+                    default:
+                        LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                        return err = 1;
+                    }
+                    break;
+                case '\n':
+                    switch (s) {
+                    case ch:
+                        s = ch;
+                        break;
+                    case cr:
+                        s = lf;
+                        break;
+                    case lf:
+                        s = ch;
+                        break;
+                    case lfcr:
+                        return err = 0;
+                        break;
+                    default:
+                        LOGGER_IS_LOGGED_ERROR("...unexpected s = " << int_to_string(s));
+                        return err = 1;
+                    }
+                    break;
+                default:
+                    s = ch;
+                    break;
+                }
+            }
+        }
+        return err;
+    }
+    
     /// ...iface
     virtual xos::network::sockets::interface& accept_iface() const {
         return (xos::network::sockets::interface&)accept_iface_;

@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,32 +13,35 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020, 3/6/2021
+///   Date: 3/3/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_KASA_BASE_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_KASA_BASE_MAIN_OPT_HPP
 
-#include "xos/app/console/network/sockets/main_opt.hpp"
+#include "xos/app/console/network/base/main.hpp"
+
+#define XOS_APP_CONSOLE_KASA_MAIN_ACCEPT_PORT 9999
+#define XOS_APP_CONSOLE_KASA_MAIN_CONNECT_PORT 9999
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace sockets {
+namespace kasa {
+namespace base {
 
-/// class maint
+/// class main_optt
 template 
-<class TExtends = main_opt, 
+<class TExtends = network::base::maint<>, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
     typedef typename extends::reader_t reader_t;
     typedef typename extends::writer_t writer_t;
@@ -49,12 +52,14 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint() {
+    main_optt()
+    : accept_port_(XOS_APP_CONSOLE_KASA_MAIN_ACCEPT_PORT),
+      connect_port_(XOS_APP_CONSOLE_KASA_MAIN_CONNECT_PORT) {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy) {
+    main_optt(const main_optt& copy) {
         throw exception(exception_unexpected);
     }
 
@@ -63,13 +68,23 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
 
-}; /// class maint
-typedef maint<> main;
+    /// accept_port / connect_port
+    virtual short& accept_port() const {
+        return (short&)accept_port_;
+    }
+    virtual short& connect_port() const {
+        return (short&)connect_port_;
+    }
 
-} /// namespace sockets
-} /// namespace network
+protected:
+    short accept_port_, connect_port_;
+}; /// class main_optt
+typedef main_optt<> main_opt;
+
+} /// namespace base
+} /// namespace kasa
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_KASA_BASE_MAIN_OPT_HPP

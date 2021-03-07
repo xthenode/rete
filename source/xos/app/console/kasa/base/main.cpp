@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,32 +13,30 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main_opt.cpp
+///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020
+///   Date: 3/3/2021
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/network/sockets/base/main_opt.hpp"
+#include "xos/app/console/kasa/base/main.hpp"
 
-#if !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_INSTANCE)
-//#define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_INSTANCE)
+#if !defined(XOS_APP_CONSOLE_KASA_BASE_MAIN_INSTANCE)
+///#define XOS_APP_CONSOLE_KASA_BASE_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_KASA_BASE_MAIN_NSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace sockets {
+namespace kasa {
 namespace base {
 
-///  Class: main_optt
-#if defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_INSTANCE)
-static main_opt the_main_opt;
-#endif /// defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_INSTANCE)
+/// class main
+#if defined(XOS_APP_CONSOLE_KASA_BASE_MAIN_INSTANCE)
+static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_KASA_BASE_MAIN_INSTANCE)
 
 } /// namespace base
-} /// namespace sockets
-} /// namespace network 
+} /// namespace kasa
 } /// namespace console
 } /// namespace app
 } /// namespace xos

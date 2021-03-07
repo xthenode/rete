@@ -43,11 +43,11 @@
     XOS_NETWORK_MAIN_INFO_OPTVAL_C}, \
 
 #define XOS_NETWORK_MAIN_HOST_OPT "host"
-#define XOS_NETWORK_MAIN_HOST_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define XOS_NETWORK_MAIN_HOST_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_NETWORK_MAIN_HOST_OPTARG_RESULT 0
 #define XOS_NETWORK_MAIN_HOST_OPTARG ""
 #define XOS_NETWORK_MAIN_HOST_OPTUSE "Hostname or address"
-#define XOS_NETWORK_MAIN_HOST_OPTVAL_S "o:"
+#define XOS_NETWORK_MAIN_HOST_OPTVAL_S "o::"
 #define XOS_NETWORK_MAIN_HOST_OPTVAL_C 'o'
 #define XOS_NETWORK_MAIN_HOST_OPTION \
    {XOS_NETWORK_MAIN_HOST_OPT, \
@@ -56,11 +56,11 @@
     XOS_NETWORK_MAIN_HOST_OPTVAL_C}, \
 
 #define XOS_NETWORK_MAIN_PORT_OPT "port"
-#define XOS_NETWORK_MAIN_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define XOS_NETWORK_MAIN_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_NETWORK_MAIN_PORT_OPTARG_RESULT 0
 #define XOS_NETWORK_MAIN_PORT_OPTARG ""
 #define XOS_NETWORK_MAIN_PORT_OPTUSE "Port number"
-#define XOS_NETWORK_MAIN_PORT_OPTVAL_S "p:"
+#define XOS_NETWORK_MAIN_PORT_OPTVAL_S "p::"
 #define XOS_NETWORK_MAIN_PORT_OPTVAL_C 'p'
 #define XOS_NETWORK_MAIN_PORT_OPTION \
    {XOS_NETWORK_MAIN_PORT_OPT, \
@@ -165,6 +165,68 @@ protected:
         return err;
     }
 
+    /// ...host_run
+    virtual int host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = this->usage(argc, argv, env);
+        return err;
+    }
+    virtual int before_host_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_host_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_host_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_host_run(argc, argv, env))) {
+            int err2 = 0;
+            err = host_run(argc, argv, env);
+            if ((err2 = after_host_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_host_run;
+        return err;
+    }
+
+    /// ...port_run
+    virtual int port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        err = this->usage(argc, argv, env);
+        return err;
+    }
+    virtual int before_port_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_port_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_port_run(int argc, char_t** argv, char** env) {
+        int err = 0;
+        if (!(err = before_port_run(argc, argv, env))) {
+            int err2 = 0;
+            err = port_run(argc, argv, env);
+            if ((err2 = after_port_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_port_run;
+        return err;
+    }
+
     /// ...options...
     virtual int on_info_option
     (int optval, const char_t* optarg, const char_t* optname, 
@@ -186,6 +248,8 @@ protected:
         if ((optarg) && (optarg[0])) {
             this->set_accept_host(optarg);
             this->set_connect_host(optarg);
+        } else {
+            err = set_host_run(argc, argv, env);
         }
         return err;
     }
@@ -206,6 +270,8 @@ protected:
                 this->set_accept_port(port);
                 this->set_connect_port(port);
             }
+        } else {
+            err = set_port_run(argc, argv, env);
         }
         return err;
     }

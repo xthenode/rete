@@ -136,6 +136,17 @@ protected:
         return err;
     }
 
+    virtual int on_surround_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("MSDOLBY DIGITAL");
+        send_request_ = &derives::send_cr_request;
+        recv_response_ = 0;
+        return err;
+    }
     virtual int on_stereo_option
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
@@ -154,6 +165,24 @@ protected:
         int err = 0;
         this->set_connect_run(argc, argv, env);
         connect_request.assign("MS");
+        if ((optarg) && (optarg[0])) {
+            connect_request.append(optarg);
+            recv_response_ = 0;
+        } else {
+            connect_request.append("?");
+            recv_response_ = &derives::recv_cr_response;
+        }
+        send_request_ = &derives::send_cr_request;
+        return err;
+    }
+
+    virtual int on_input_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        string_t& connect_request = this->connect_request();
+        int err = 0;
+        this->set_connect_run(argc, argv, env);
+        connect_request.assign("SI");
         if ((optarg) && (optarg[0])) {
             connect_request.append(optarg);
         } else {
@@ -200,6 +229,19 @@ protected:
         }
         send_request_ = &derives::send_cr_request;
         recv_response_ = &derives::recv_cr_response;
+        return err;
+    }
+
+    virtual int on_argument
+    (const char_t* arg, int argind, int argc, char_t** argv, char** env) {
+        int err = 0;
+        if ((arg) && (arg[0])) {
+            string_t& connect_request = this->connect_request();
+            this->set_connect_run(argc, argv, env);
+            connect_request.assign(arg);
+            send_request_ = &derives::send_cr_request;
+            recv_response_ = &derives::recv_cr_response;
+        }
         return err;
     }
 

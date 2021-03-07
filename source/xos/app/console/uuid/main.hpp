@@ -73,12 +73,12 @@ protected:
                 index = ::atoi(arg);
             }
         }
-        DEBUG_ERRLLN(__LOCATION__, "uuid.generate(index = ", signed_to_string(index).chars(), ")...", null);
+        LOGGER_IS_LOGGED_DEBUG("uuid.generate(index = " << signed_to_string(index) << ")...");
         if ((uuid.generate(index))) {
-            DEBUG_ERRLLN(__LOCATION__, "...uuid.generate(index = ", signed_to_string(index).chars(), ")", null);
+            LOGGER_IS_LOGGED_DEBUG("...uuid.generate(index = " << signed_to_string(index) << ")");
             this->out(uuid.string().chars());
         } else {
-            DEBUG_ERRLLN(__LOCATION__, "...failed on uuid.generate(index = ", signed_to_string(index).chars(), ")", null);
+            LOGGER_IS_LOGGED_ERROR("...failed on uuid.generate(index = " << signed_to_string(index) << ")");
         }
         return err;
     }

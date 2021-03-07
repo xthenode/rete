@@ -16,7 +16,7 @@
 ///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020
+///   Date: 11/7/2020, 3/4/2021
 ///////////////////////////////////////////////////////////////////////
 #ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_HPP
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPT_HPP
@@ -30,11 +30,11 @@
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_CONNECT_PORT 80
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPT "info"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_NONE
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTARG ""
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTUSE "Address info"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTVAL_S "i"
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTVAL_S "i::"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTVAL_C 'i'
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTION \
    {XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPT, \
@@ -43,11 +43,11 @@
     XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTVAL_C}, \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPT "host"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG ""
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTUSE "Hostname or address"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_S "o:"
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_S "o::"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_C 'o'
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTION \
    {XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPT, \
@@ -56,11 +56,11 @@
     XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_C}, \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPT "port"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_REQUIRED
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG_RESULT 0
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG ""
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTUSE "Port number"
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_S "p:"
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_S "p::"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_C 'p'
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTION \
    {XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPT, \
@@ -132,11 +132,149 @@ private:
 
 protected:
     /// ...run
+    int (derives::*run_)(int argc, char_t** argv, char_t** env);
+    virtual int run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if ((run_)) {
+            err = (this->*run_)(argc, argv, env);
+        } else {
+            err = extends::run(argc, argv, env);
+        }
+        return err;
+    }
+
+    /// ...info_run
     virtual int set_info_run(int argc, char_t** argv, char_t** env) {
         int err = 0;
         return err;
     }
+    virtual int before_set_info_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_set_info_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_set_info_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_set_info_run(argc, argv, env))) {
+            int err2 = 0;
+            err = set_info_run(argc, argv, env);
+            if ((err2 = after_set_info_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
     
+    /// ...host_run
+    virtual int host_run(int argc, char_t** argv, char_t** env) {
+        const string_t& host = this->host();
+        const char_t* chars = 0; size_t length = 0;
+        int err = 0;
+        if ((chars = host.has_chars(length))) {
+            this->outln(chars, length);
+        }
+        return err;
+    }
+    virtual int before_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_host_run(argc, argv, env))) {
+            int err2 = 0;
+            err = host_run(argc, argv, env);
+            if ((err2 = after_host_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_host_run;
+        return err;
+    }
+    virtual int before_set_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_set_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_set_host_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_set_host_run(argc, argv, env))) {
+            int err2 = 0;
+            err = set_host_run(argc, argv, env);
+            if ((err2 = after_set_host_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
+    /// ...port_run
+    virtual int port_run(int argc, char_t** argv, char_t** env) {
+        const short& port = this->port();
+        int err = 0;
+        if (0 < (port)) {
+            this->outln(unsigned_to_string(port).chars());
+        }
+        return err;
+    }
+    virtual int before_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_port_run(argc, argv, env))) {
+            int err2 = 0;
+            err = port_run(argc, argv, env);
+            if ((err2 = after_port_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+    virtual int set_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        run_ = &derives::all_port_run;
+        return err;
+    }
+    virtual int before_set_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int after_set_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        return err;
+    }
+    virtual int all_set_port_run(int argc, char_t** argv, char_t** env) {
+        int err = 0;
+        if (!(err = before_set_port_run(argc, argv, env))) {
+            int err2 = 0;
+            err = set_port_run(argc, argv, env);
+            if ((err2 = after_set_port_run(argc, argv, env))) {
+                if (!(err)) err = err2;
+            }
+        }
+        return err;
+    }
+
     /// ...host / ...port
     virtual string_t& set_host(const string_t& to) {
         string_t& host = this->host();
@@ -164,7 +302,7 @@ protected:
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {
         int err = 0;
-        err = set_info_run(argc, argv, env);
+        err = all_set_info_run(argc, argv, env);
         return err;
     }
     virtual const char_t* info_option_usage(const char_t*& optarg, const struct option* longopt) {
@@ -179,6 +317,8 @@ protected:
         int err = 0;
         if ((optarg) && (optarg[0])) {
             this->set_host(optarg);
+        } else {
+            err = all_set_host_run(argc, argv, env);
         }
         return err;
     }
@@ -198,6 +338,8 @@ protected:
             if ((0 < port)) {
                 this->set_port(port);
             }
+        } else {
+            err = all_set_port_run(argc, argv, env);
         }
         return err;
     }

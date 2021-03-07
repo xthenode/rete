@@ -18,24 +18,25 @@
 /// Author: $author$
 ///   Date: 11/7/2020
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/sockets/main_opt.hpp"
+#include "xos/app/console/network/sockets/main_opt.hpp"
 
-#if !defined(XOS_APP_CONSOLE_SOCKETS_MAIN_OPT_INSTANCE)
-//#define XOS_APP_CONSOLE_SOCKETS_MAIN_OPT_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_SOCKETS_MAIN_OPT_INSTANCE)
+#if !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_OPT_INSTANCE)
+//#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_OPT_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_OPT_INSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
+namespace network {
 namespace sockets {
 
 ///  Class: main_optt
-#if defined(XOS_APP_CONSOLE_SOCKETS_MAIN_OPT_INSTANCE)
-//static main_opt the_main_opt;
-#endif /// defined(XOS_APP_CONSOLE_SOCKETS_MAIN_OPT_INSTANCE)
-
+#if defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_OPT_INSTANCE)
+static main_opt the_main_opt;
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_OPT_INSTANCE)
 
 } /// namespace sockets
+} /// namespace network
 } /// namespace console
 } /// namespace app
 } /// namespace xos

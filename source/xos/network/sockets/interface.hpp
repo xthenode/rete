@@ -198,6 +198,12 @@ public:
     }
 
     /// send... / recv...
+    virtual ssize_t send(const void* buf, size_t len) {
+        return send(buf, len, send_flags_default);
+    }
+    virtual ssize_t recv(void* buf, size_t len) {
+        return recv(buf, len, recv_flags_default);
+    }
     virtual ssize_t send(const void* buf, size_t len, send_flags_t flags) {
         return -1;
     }

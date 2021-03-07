@@ -147,7 +147,21 @@ protected:
         return err;
     }
 
-    /// ...options...
+    /// network_server...option...
+    virtual int network_server_on_option
+    (int optval, const char_t* optarg, const char_t* optname, 
+     int optind, int argc, char_t**argv, char_t**env) {
+        int err = 0;
+        err = derives::on_option(optval, optarg, optname, optind, argc, argv, env);
+        return err;
+    }
+    virtual const char_t* network_server_option_usage(const char_t*& optarg, const struct option* longopt) {
+        const char_t* chars = "";
+        chars = derives::option_usage(optarg, longopt);
+        return chars;
+    }
+
+    /// ...option...
     virtual int on_accept_once_option
     (int optval, const char_t* optarg, const char_t* optname, 
      int optind, int argc, char_t**argv, char_t**env) {

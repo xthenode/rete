@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -13,32 +13,49 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020, 3/6/2021
+///   Date: 3/3/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_KASA_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_KASA_MAIN_OPT_HPP
 
-#include "xos/app/console/network/sockets/main_opt.hpp"
+#include "xos/app/console/network/sockets/main.hpp"
+#include "xos/app/console/kasa/client/main.hpp"
+#include "xos/app/console/kasa/server/main.hpp"
+
+#define XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_APP_CONSOLE_KASA_CLIENT_MAIN_OPTIONS_CHARS_EXTEND \
+
+#define XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_APP_CONSOLE_KASA_CLIENT_MAIN_OPTIONS_OPTIONS_EXTEND \
+
+#define XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_CHARS \
+    XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS \
+
+#define XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_OPTIONS \
+    XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS \
 
 namespace xos {
 namespace app {
 namespace console {
-namespace network {
-namespace sockets {
+namespace kasa {
 
-/// class maint
+/// class main_optt
 template 
-<class TExtends = main_opt, 
+<class TExtends = kasa::client::maint<kasa::client::main_optt
+ <kasa::server::maint<kasa::server::main_optt
+   <kasa::base::maint<kasa::base::main_optt<network::sockets::maint<> > > > > > >, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
     typedef typename extends::reader_t reader_t;
     typedef typename extends::writer_t writer_t;
@@ -49,13 +66,12 @@ public:
     enum { end_char = extends::end_char };
 
     /// constructor / destructor
-    maint() {
+    main_optt() {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy) {
-        throw exception(exception_unexpected);
+    main_optt(const main_optt& copy) {
     }
 
 protected:
@@ -63,13 +79,21 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
 
-}; /// class maint
-typedef maint<> main;
+    /// ...option...
+    virtual const char_t* options(const struct option*& longopts) {
+        static const char_t* chars = XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_CHARS;
+        static struct option optstruct[]= {
+            XOS_APP_CONSOLE_KASA_MAIN_OPTIONS_OPTIONS
+            {0, 0, 0, 0}};
+        longopts = optstruct;
+        return chars;
+    }
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
-} /// namespace sockets
-} /// namespace network
+} /// namespace kasa
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_KASA_MAIN_OPT_HPP

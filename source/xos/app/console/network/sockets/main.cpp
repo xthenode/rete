@@ -16,26 +16,27 @@
 ///   File: main.cpp
 ///
 /// Author: $author$
-///   Date: 11/7/2020
+///   Date: 11/7/2020, 3/6/2021
 ///////////////////////////////////////////////////////////////////////
-#include "xos/app/console/sockets/main.hpp"
+#include "xos/app/console/network/sockets/main.hpp"
 
-#if !defined(XOS_APP_CONSOLE_SOCKETS_MAIN_INSTANCE)
-//#define XOS_APP_CONSOLE_SOCKETS_MAIN_INSTANCE
-#endif /// !defined(XOS_APP_CONSOLE_SOCKETS_MAIN_INSTANCE)
+#if !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_INSTANCE)
+///#define XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_INSTANCE
+#endif /// !defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_NSTANCE)
 
 namespace xos {
 namespace app {
 namespace console {
+namespace network {
 namespace sockets {
 
-///  Class: maint
-#if defined(XOS_APP_CONSOLE_SOCKETS_MAIN_INSTANCE)
-//static main the_main;
-#endif /// defined(XOS_APP_CONSOLE_SOCKETS_MAIN_INSTANCE)
-
+/// class main
+#if defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_INSTANCE)
+static main the_main;
+#endif /// defined(XOS_APP_CONSOLE_NETWORK_SOCKETS_MAIN_INSTANCE)
 
 } /// namespace sockets
+} /// namespace network
 } /// namespace console
 } /// namespace app
 } /// namespace xos

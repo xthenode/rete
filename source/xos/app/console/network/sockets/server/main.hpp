@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////
-/// Copyright (c) 1988-2020 $organization$
+/// Copyright (c) 1988-2021 $organization$
 ///
 /// This software is provided by the author and contributors ``as is'' 
 /// and any express or implied warranties, including, but not limited to, 
@@ -16,69 +16,67 @@
 ///   File: main.hpp
 ///
 /// Author: $author$
-///   Date: 9/9/2020
+///   Date: 3/4/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_RETE_SERVER_MAIN_HPP
-#define XOS_APP_CONSOLE_RETE_SERVER_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_NETWORK_SOCKETS_SERVER_MAIN_HPP
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_SERVER_MAIN_HPP
 
-#include "xos/app/console/rete/server/main_opt.hpp"
+#include "xos/app/console/network/sockets/server/main_opt.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace rete {
+namespace network {
+namespace sockets {
 namespace server {
 
 /// class maint
-template <class TExtends = rete::server::main_opt, class TImplements = typename TExtends::implements>
+template 
+<class TExtends = server::main_opt, 
+ class TImplements = typename TExtends::implements>
+
 class exported maint: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives; 
-    
-    typedef typename extends::in_reader_t in_reader_t;
-    typedef typename extends::out_writer_t out_writer_t;
-    typedef typename extends::err_writer_t err_writer_t;
+    typedef maint derives;
+
+    typedef typename extends::reader_t reader_t;
+    typedef typename extends::writer_t writer_t;
+    typedef typename extends::file_t file_t;
     typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
+    typedef typename extends::end_char_t end_char_t;
+    enum { end_char = extends::end_char };
 
-    /// constructors / destructor
+    /// constructor / destructor
     maint(): accept_response_("HTTP/1.0 200 OK\r\n\r\nOK\r\n") {
     }
     virtual ~maint() {
     }
 private:
     maint(const maint& copy) {
+        throw exception(exception_unexpected);
     }
 
 protected:
+    typedef typename extends::in_reader_t in_reader_t;
+    typedef typename extends::out_writer_t out_writer_t;
+    typedef typename extends::err_writer_t err_writer_t;
+
     /// ...recv_request
     virtual int recv_request(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
-        char_t c = 0;
         string_t& accept_request = this->accept_request();
-
-        if (!(err = this->recv_crlf2(accept_request, c, cn, argc, argv, env))) {
-            size_t length = 0;
-            const char_t* chars = 0;
-            if ((chars = accept_request.has_chars(length))) {
-                this->out(chars, length);
-            }
-        }
+        err = this->all_recv_request(accept_request, cn, argc, argv, env);
         return err;
     }
     
     /// ...send_response
     virtual int send_response(xos::network::sockets::interface& cn, int argc, char_t** argv, char_t**env) {
         int err = 0;
-        size_t length = 0;
-        const char_t* chars = 0;
         string_t& accept_response = this->accept_response();
-        
-        if ((chars = accept_response.has_chars(length))) {
-            cn.send(chars, length, 0);
-        }
+        err = this->all_send_response(cn, accept_response, argc, argv, env);
         return err;
     }
 
@@ -96,9 +94,10 @@ protected:
 typedef maint<> main;
 
 } /// namespace server
-} /// namespace rete
+} /// namespace sockets
+} /// namespace network
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// XOS_APP_CONSOLE_RETE_SERVER_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_NETWORK_SOCKETS_SERVER_MAIN_HPP

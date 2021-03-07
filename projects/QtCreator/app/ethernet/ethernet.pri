@@ -37,6 +37,8 @@ $${rete_INCLUDEPATH} \
 #
 ethernet_DEFINES += \
 $${rete_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_ETHERNET_MAIN_INSTANCE \
 
 ########################################################################
 # ethernet OBJECTIVE_HEADERS

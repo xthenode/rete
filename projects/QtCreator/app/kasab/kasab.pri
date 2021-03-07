@@ -1,5 +1,5 @@
 ########################################################################
-# Copyright (c) 1988-2020 $organization$
+# Copyright (c) 1988-2021 $organization$
 #
 # This software is provided by the author and contributors ``as is''
 # and any express or implied warranties, including, but not limited to,
@@ -13,70 +13,76 @@
 # or otherwise) arising in any way out of the use of this software,
 # even if advised of the possibility of such damage.
 #
-#   File: network.pri
+#   File: kasab.pri
 #
 # Author: $author$
-#   Date: 9/9/2020
+#   Date: 3/3/2021
 #
-# QtCreator .pri file for rete executable network
+# QtCreator .pri file for rete executable kasab
 ########################################################################
 
 ########################################################################
-# network
+# kasab
 
-# network TARGET
+# kasab TARGET
 #
-network_TARGET = network
+kasab_TARGET = kasab
 
-# network INCLUDEPATH
+# kasab INCLUDEPATH
 #
-network_INCLUDEPATH += \
+kasab_INCLUDEPATH += \
 $${rete_INCLUDEPATH} \
 
-# network DEFINES
+# kasab DEFINES
 #
-network_DEFINES += \
+kasab_DEFINES += \
 $${rete_DEFINES} \
-LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
-XOS_APP_CONSOLE_NETWORK_MAIN_INSTANCE \
+DEFAULT_LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_KASA_MAIN_INSTANCE \
 
 ########################################################################
-# network OBJECTIVE_HEADERS
+# kasab OBJECTIVE_HEADERS
 #
-#network_OBJECTIVE_HEADERS += \
+#kasab_OBJECTIVE_HEADERS += \
 #$${RETE_SRC}/rete/base/Base.hh \
 
-# network OBJECTIVE_SOURCES
+# kasab OBJECTIVE_SOURCES
 #
-#network_OBJECTIVE_SOURCES += \
+#kasab_OBJECTIVE_SOURCES += \
 #$${RETE_SRC}/rete/base/Base.mm \
 
 ########################################################################
-# network HEADERS
+# kasab HEADERS
 #
-network_HEADERS += \
-$${RETE_SRC}/xos/app/console/network/main_opt.hpp \
-$${RETE_SRC}/xos/app/console/network/main.hpp \
+kasab_HEADERS += \
+$${RETE_SRC}/xos/app/console/kasa/base/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/kasa/base/main.hpp \
+$${RETE_SRC}/xos/app/console/kasa/client/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/kasa/client/main.hpp \
+$${RETE_SRC}/xos/app/console/kasa/server/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/kasa/server/main.hpp \
+$${RETE_SRC}/xos/app/console/kasa/main_opt.hpp \
+$${RETE_SRC}/xos/app/console/kasa/main.hpp \
 \
 $${NADIR_SRC}/xos/console/main_main.hpp \
 
-# network SOURCES
+# kasab SOURCES
 #
-network_SOURCES += \
-$${RETE_SRC}/xos/app/console/network/main_opt.cpp \
-$${RETE_SRC}/xos/app/console/network/main.cpp \
+kasab_SOURCES += \
+$${RETE_SRC}/xos/app/console/kasa/main_opt.cpp \
+$${RETE_SRC}/xos/app/console/kasa/main.cpp \
 \
 $${NADIR_SRC}/xos/console/main_main.cpp \
 
 ########################################################################
-# network FRAMEWORKS
+# kasab FRAMEWORKS
 #
-network_FRAMEWORKS += \
+kasab_FRAMEWORKS += \
 $${rete_FRAMEWORKS} \
 
-# network LIBS
+# kasab LIBS
 #
-network_LIBS += \
+kasab_LIBS += \
 $${rete_LIBS} \
 
 

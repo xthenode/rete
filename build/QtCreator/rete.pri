@@ -16,17 +16,32 @@
 #   File: rete.pri
 #
 # Author: $author$
-#   Date: 3/19/2020
+#   Date: 3/19/2020, 12/30/2020
 #
 # Build specific QtCreator .pri file for rete
 ########################################################################
+contains(BUILD_OS,Uname) {
 UNAME = $$system(uname)
 
-contains(UNAME,Uname) {
-BUILD_OS = RETE_OS
+contains(UNAME,Darwin) {
+BUILD_OS = macosx
+} else {
+contains(UNAME,Linux) {
+BUILD_OS = linux
+} else {
+contains(UNAME,Windows) {
+BUILD_OS = windows
 } else {
 BUILD_OS = os
-} # contains(UNAME,Uname)
+} # contains(UNAME,Windows)
+} # contains(UNAME,Linux)
+} # contains(UNAME,Darwin)
+} else {
+contains(BUILD_OS,RETE_OS) {
+} else {
+BUILD_OS = os
+} # contains(BUILD_OS,RETE_OS)
+} # contains(BUILD_OS,Uname)
 
 #BUILD_CPP_VERSION = 11
 

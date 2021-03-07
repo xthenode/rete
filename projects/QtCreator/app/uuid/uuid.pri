@@ -37,6 +37,8 @@ $${rete_INCLUDEPATH} \
 #
 uuid_DEFINES += \
 $${rete_DEFINES} \
+LOGGING_LEVELS_DEFAULT=LOGGING_LEVELS_ERROR \
+XOS_APP_CONSOLE_UUID_MAIN_INSTANCE \
 
 ########################################################################
 # uuid OBJECTIVE_HEADERS

@@ -16,10 +16,11 @@
 #   File: marantz.pro
 #
 # Author: $author$
-#   Date: 11/16/2020
+#   Date: 11/16/2020, 12/30/2020
 #
 # QtCreator .pro file for rete executable marantz
 ########################################################################
+include(../../../../../../build/QtCreator/rete.pri)
 include(../../../../../build/QtCreator/rete.pri)
 include(../../../../QtCreator/rete.pri)
 include(../../rete.pri)

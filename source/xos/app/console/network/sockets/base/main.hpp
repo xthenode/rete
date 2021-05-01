@@ -695,6 +695,11 @@ protected:
         this->set_connect_host(to);
         return this->host();
     }
+    virtual string_t& set_host(const char_t* to) {
+        this->set_accept_host(to);
+        this->set_connect_host(to);
+        return this->host();
+    }
     virtual string_t& host() const {
         return this->connect_host();
     }
@@ -710,21 +715,21 @@ protected:
     /// ...accept_host / ...accept_port
     virtual string_t& set_accept_host(const string_t& to) {
         const char_t* chars = to.has_chars();
-        if ((chars)) accept_host_.assign(to);
-        else accept_host_.clear();
-        return accept_host();
+        return set_accept_host(chars);
     }
     virtual string_t& set_accept_host(const char_t* to) {
-        if ((to)) accept_host_.assign(to);
-        else accept_host_.clear();
-        return accept_host();
+        string_t& accept_host = this->accept_host();
+        if ((to)) accept_host.assign(to);
+        else accept_host.clear();
+        return accept_host;
     }
     virtual string_t& accept_host() const {
         return (string_t&)accept_host_;
     }
     virtual short& set_accept_port(short to) {
-        accept_port_ = to;
-        return accept_port();
+        short& accept_port = this->accept_port();
+        accept_port = to;
+        return accept_port;
     }
     virtual short& accept_port() const {
         return (short&)accept_port_;
@@ -733,21 +738,21 @@ protected:
     /// ...connect_host / ...connect_port
     virtual string_t& set_connect_host(const string_t& to) {
         const char_t* chars = to.has_chars();
-        if ((chars)) connect_host_.assign(to);
-        else connect_host_.clear();
-        return connect_host();
+        return set_connect_host(chars);
     }
     virtual string_t& set_connect_host(const char_t* to) {
-        if ((to)) connect_host_.assign(to);
-        else connect_host_.clear();
-        return connect_host();
+        string_t& connect_host = this->connect_host();
+        if ((to)) connect_host.assign(to);
+        else connect_host.clear();
+        return connect_host;
     }
     virtual string_t& connect_host() const {
         return (string_t&)connect_host_;
     }
     virtual short& set_connect_port(short to) {
-        connect_port_ = to;
-        return connect_port();
+        short& connect_port = this->connect_port();
+        connect_port = to;
+        return connect_port;
     }
     virtual short& connect_port() const {
         return (short&)connect_port_;
@@ -766,6 +771,9 @@ protected:
     virtual xos::network::sockets::interface& connect_iface() const {
         return (xos::network::sockets::interface&)connect_iface_;
     }
+    virtual xos::network::sockets::interface& relay_iface() const {
+        return (xos::network::sockets::interface&)relay_iface_;
+    }
 #if !defined(WINSOCK_1)
 #else /// !defined(WINSOCK_1)
 #endif /// !defined(WINSOCK_1)
@@ -782,6 +790,12 @@ protected:
     }
     virtual xos::network::sockets::socklen_t& connect_addrlen() const {
         return (xos::network::sockets::socklen_t&)connect_addrlen_;
+    }
+    virtual xos::network::sockets::sockaddr_t& relay_addr() const {
+        return (xos::network::sockets::sockaddr_t&)relay_addr_;
+    }
+    virtual xos::network::sockets::socklen_t& relay_addrlen() const {
+        return (xos::network::sockets::socklen_t&)relay_addrlen_;
     }
 #if !defined(WINSOCK_1)
 #else /// !defined(WINSOCK_1)
@@ -840,10 +854,10 @@ protected:
     short accept_port_, connect_port_;
     char host_name_[1024];
 
-    xos::network::sockets::interface accept_iface_, connect_iface_;
+    xos::network::sockets::interface accept_iface_, connect_iface_, relay_iface_;
 
-    xos::network::sockets::sockaddr_t accept_addr_, connect_addr_;
-    xos::network::sockets::socklen_t accept_addrlen_, connect_addrlen_;
+    xos::network::sockets::sockaddr_t accept_addr_, connect_addr_, relay_addr_;
+    xos::network::sockets::socklen_t accept_addrlen_, connect_addrlen_, relay_addrlen_;
 
     xos::network::sockets::ip::v4::endpoint ip_v4_ep_;
     xos::network::sockets::ip::v4::tcp::transport ip_v4_tcp_tp_;

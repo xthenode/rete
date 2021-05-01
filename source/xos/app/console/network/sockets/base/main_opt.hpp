@@ -45,7 +45,7 @@
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPT "host"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG_RESULT 0
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG ""
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTARG "[{ name | ddd.ddd.ddd.ddd }]"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTUSE "Hostname or address"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_S "o::"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_C 'o'
@@ -58,7 +58,7 @@
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPT "port"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG_REQUIRED MAIN_OPT_ARGUMENT_OPTIONAL
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG_RESULT 0
-#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG ""
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTARG "[{ 0..2^16-1 }]"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTUSE "Port number"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_S "p::"
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_C 'p'
@@ -71,23 +71,26 @@
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_CHARS_EXTEND \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTVAL_S \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTVAL_S \
-    XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_S
+    XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTVAL_S \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_INFO_OPTION \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_HOST_OPTION \
-    XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTION
+    XOS_APP_CONSOLE_NETWORK_SOCKETS_PORT_OPTION \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_CHARS \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_CHARS_EXTEND \
-    XOS_CONSOLE_MAIN_OPTIONS_CHARS
+    XOS_CONSOLE_MAIN_OPTIONS_CHARS \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_OPTIONS \
     XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_OPTIONS_OPTIONS_EXTEND \
-    XOS_CONSOLE_MAIN_OPTIONS_OPTIONS
+    XOS_CONSOLE_MAIN_OPTIONS_OPTIONS \
 
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_ARUMENTS_CHARS 0
 #define XOS_APP_CONSOLE_NETWORK_SOCKETS_ARUMENTS_ARGS 0
+
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_ARGS 0
+#define XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_ARGV 0,
 
 #if !defined(WINSOCK_1)
 #else /// !defined(WINSOCK_1)
@@ -224,7 +227,7 @@ protected:
 
     /// ...port_run
     virtual int port_run(int argc, char_t** argv, char_t** env) {
-        const short& port = this->port();
+        const short& port = this->get_port();
         int err = 0;
         if (0 < (port)) {
             this->outln(unsigned_to_string(port).chars());
@@ -290,6 +293,10 @@ protected:
     virtual short& set_port(short to) {
         short& port = this->port();
         port = to;
+        return port;
+    }
+    virtual const short& get_port() const {
+        const short& port = this->port();
         return port;
     }
     virtual short& port() const {
@@ -396,9 +403,13 @@ protected:
     }
 
     /// ...arguments...
-    virtual const char_t* arguments(const char_t**& args) {
-        args = XOS_APP_CONSOLE_NETWORK_SOCKETS_ARUMENTS_ARGS;
-        return XOS_APP_CONSOLE_NETWORK_SOCKETS_ARUMENTS_CHARS;
+    virtual const char_t* arguments(const char_t**& argv) {
+        static const char_t* _args = XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_ARGS;
+        static const char_t* _argv[] = {
+            XOS_APP_CONSOLE_NETWORK_SOCKETS_BASE_MAIN_ARGV
+            0};
+        argv = _argv;
+        return _args;
     }
 
 #if !defined(WINSOCK_1)

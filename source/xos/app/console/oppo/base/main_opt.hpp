@@ -13,49 +13,53 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 3/4/2021
+///   Date: 4/27/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
-#define XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_OPPO_BASE_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_OPPO_BASE_MAIN_OPT_HPP
 
-#include "xos/app/console/os/sockets/base/main_opt.hpp"
+#include "xos/app/console/network/base/main.hpp"
+
+#define XOS_APP_CONSOLE_OPPO_MAIN_ACCEPT_PORT 2323
+#define XOS_APP_CONSOLE_OPPO_MAIN_CONNECT_PORT 23
 
 namespace xos {
 namespace app {
 namespace console {
-namespace os {
-namespace sockets {
+namespace oppo {
 namespace base {
 
-/// class maint
+/// class main_optt
 template 
-<class TExtends = base::main_opt, 
+<class TExtends = network::base::maint<>, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
-    typedef typename extends::reader_t reader_t;
-    typedef typename extends::writer_t writer_t;
-    typedef typename extends::file_t file_t;
-    typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
+    typedef typename extends::string_t string_t;
+    typedef typename extends::reader_t reader_t;
+    typedef typename extends::writer_t writer_t;
+    typedef typename extends::file_t file_t;
 
     /// constructor / destructor
-    maint() {
+    main_optt()
+    : accept_port_(XOS_APP_CONSOLE_OPPO_MAIN_ACCEPT_PORT),
+      connect_port_(XOS_APP_CONSOLE_OPPO_MAIN_CONNECT_PORT) {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy) {
+    main_optt(const main_optt& copy) {
         throw exception(exception_unexpected);
     }
 
@@ -64,27 +68,23 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
 
-    /// ...iface
-    virtual xos::network::sockets::interface& accept_iface() const {
-        return (xos::network::sockets::interface&)os_accept_iface_;
+    /// accept_port / connect_port
+    virtual short& accept_port() const {
+        return (short&)accept_port_;
     }
-    virtual xos::network::sockets::interface& connect_iface() const {
-        return (xos::network::sockets::interface&)os_connect_iface_;
-    }
-    virtual xos::network::sockets::interface& relay_iface() const {
-        return (xos::network::sockets::interface&)os_relay_iface_;
+    virtual short& connect_port() const {
+        return (short&)connect_port_;
     }
 
 protected:
-    xos::network::sockets::os::interface os_accept_iface_, os_connect_iface_, os_relay_iface_;
-}; /// class maint
-typedef maint<> main;
+    short accept_port_, connect_port_;
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
 } /// namespace base
-} /// namespace sockets
-} /// namespace os
+} /// namespace oppo
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_OPPO_BASE_MAIN_OPT_HPP

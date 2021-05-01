@@ -68,6 +68,21 @@
 #define XOS_NETWORK_SERVER_MAIN_ARUMENTS_CHARS 0
 #define XOS_NETWORK_SERVER_MAIN_ARUMENTS_ARGS 0
 
+///
+/// XOS_APP_CONSOLE_NETWORK_SERVER_MAIN_OPTIONS_...
+/// 
+#define XOS_APP_CONSOLE_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS_EXTEND \
+
+#define XOS_APP_CONSOLE_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS_EXTEND \
+
+#define XOS_APP_CONSOLE_NETWORK_SERVER_MAIN_OPTIONS_CHARS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_CHARS \
+
+#define XOS_APP_CONSOLE_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS \
+    XOS_NETWORK_SERVER_MAIN_OPTIONS_OPTIONS \
+
 namespace xos {
 namespace app {
 namespace console {
@@ -256,7 +271,7 @@ protected:
     virtual bool& accept_restart() const {
         return (bool&)accept_restart_;
     }
-
+    
 protected:
     bool accept_once_, accept_done_, accept_restart_;
 }; /// class main_optt

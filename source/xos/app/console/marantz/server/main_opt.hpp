@@ -13,49 +13,49 @@
 /// or otherwise) arising in any way out of the use of this software, 
 /// even if advised of the possibility of such damage.
 ///
-///   File: main.hpp
+///   File: main_opt.hpp
 ///
 /// Author: $author$
-///   Date: 3/4/2021
+///   Date: 4/27/2021
 ///////////////////////////////////////////////////////////////////////
-#ifndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
-#define XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
+#ifndef XOS_APP_CONSOLE_MARANTZ_SERVER_MAIN_OPT_HPP
+#define XOS_APP_CONSOLE_MARANTZ_SERVER_MAIN_OPT_HPP
 
-#include "xos/app/console/os/sockets/base/main_opt.hpp"
+#include "xos/app/console/network/sockets/server/main.hpp"
+#include "xos/app/console/marantz/base/main.hpp"
 
 namespace xos {
 namespace app {
 namespace console {
-namespace os {
-namespace sockets {
-namespace base {
+namespace marantz {
+namespace server {
 
-/// class maint
+/// class main_optt
 template 
-<class TExtends = base::main_opt, 
+<class TExtends = marantz::base::maint<marantz::base::main_optt<network::sockets::server::maint<> > >, 
  class TImplements = typename TExtends::implements>
 
-class exported maint: virtual public TImplements, public TExtends {
+class exported main_optt: virtual public TImplements, public TExtends {
 public:
     typedef TImplements implements;
     typedef TExtends extends;
-    typedef maint derives;
+    typedef main_optt derives;
 
-    typedef typename extends::reader_t reader_t;
-    typedef typename extends::writer_t writer_t;
-    typedef typename extends::file_t file_t;
-    typedef typename extends::string_t string_t;
     typedef typename extends::char_t char_t;
     typedef typename extends::end_char_t end_char_t;
     enum { end_char = extends::end_char };
+    typedef typename extends::string_t string_t;
+    typedef typename extends::reader_t reader_t;
+    typedef typename extends::writer_t writer_t;
+    typedef typename extends::file_t file_t;
 
     /// constructor / destructor
-    maint() {
+    main_optt() {
     }
-    virtual ~maint() {
+    virtual ~main_optt() {
     }
 private:
-    maint(const maint& copy) {
+    main_optt(const main_optt& copy) {
         throw exception(exception_unexpected);
     }
 
@@ -64,27 +64,14 @@ protected:
     typedef typename extends::out_writer_t out_writer_t;
     typedef typename extends::err_writer_t err_writer_t;
 
-    /// ...iface
-    virtual xos::network::sockets::interface& accept_iface() const {
-        return (xos::network::sockets::interface&)os_accept_iface_;
-    }
-    virtual xos::network::sockets::interface& connect_iface() const {
-        return (xos::network::sockets::interface&)os_connect_iface_;
-    }
-    virtual xos::network::sockets::interface& relay_iface() const {
-        return (xos::network::sockets::interface&)os_relay_iface_;
-    }
-
 protected:
-    xos::network::sockets::os::interface os_accept_iface_, os_connect_iface_, os_relay_iface_;
-}; /// class maint
-typedef maint<> main;
+}; /// class main_optt
+typedef main_optt<> main_opt;
 
-} /// namespace base
-} /// namespace sockets
-} /// namespace os
+} /// namespace server
+} /// namespace marantz
 } /// namespace console
 } /// namespace app
 } /// namespace xos
 
-#endif /// ndef XOS_APP_CONSOLE_OS_SOCKETS_BASE_MAIN_HPP
+#endif /// ndef XOS_APP_CONSOLE_MARANTZ_SERVER_MAIN_OPT_HPP
